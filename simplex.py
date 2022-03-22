@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 
 #global variables
 fileName = ""
@@ -331,24 +332,24 @@ def simplexMethod():
         addIterationToFinalSolution(f,optimal,iterationNumber)              #Se agrega el estado 0 al archivo de salida txt
         iterationNumber += 1
     
-    else:
-        #preguntar si es optimo
-        optimal = isOptimal()
-        #si lo es -> ver si tiene soluciones multiples, de lo contrario fin.
-        #si no es optimo: buscar el menor de la objetivo (si hay mas de uno poner que es acotada), seleccionar los valores de su columna y dividirlos por los del lado derecho. VERIFICAR SI EXISTEN CEROS
-        if optimal == False:
-            minNumberPosition = getMinNumberPosition()
-        
-            #degenerateSolution = isDegenerateSolution(minNumberPosition)
-            dividingNumbers = getColumnDividingNumbers(minNumberPosition)                            #numeros que dividen el lado derecho
-            boundedSolution = getPivotNumber("is bounded?",dividingNumbers)
-            pivotNumber = getPivotNumber("pivot",dividingNumbers)
-            pivotPosition = getPivotNumber("pivot position", dividingNumbers)
-
+    #optimal = isOptimal()
+    #while optimal != True:
+    if iterationNumber == 1:
+        pivotCol = getMinNumberPosition()
+        #degenerateSolution = isDegenerateSolution(pivotCol)
+        dividingNumbers = getColumnDividingNumbers(pivotCol)                            #numeros que dividen el lado derecho
+        boundedSolution = getPivotNumber("is bounded?",dividingNumbers)
+        pivotNumber = getPivotNumber("pivot",dividingNumbers)
+        pivotRow = getPivotNumber("pivot position", dividingNumbers)
+        #coordinate = (pivotRow, pivotCol) # x and y
+        bV[pivotRow] = 'x'+str(intTotalVariables[pivotCol])
+        getAugmentedSolutionSimplex()                                       #Al ser primer estado simplemente se da la solucion aumentada e informacion de variables
+        addIterationToFinalSolution(f,optimal,iterationNumber)              #Se agrega el estado 0 al archivo de salida txt
+        iterationNumber += 1
+        #optimal = isOptimal()
 
     print(augmentedSolution)
     print(optimal)
-
 
 def getPivotNumber(request,dividingNumbers):
     pivot = 0
@@ -369,7 +370,6 @@ def getPivotNumber(request,dividingNumbers):
                 validNumbersToDivide.append(i)
                 i += 1
 
-
     if request == "is bounded?":
         if divisionResults == []:
             return True
@@ -380,6 +380,7 @@ def getPivotNumber(request,dividingNumbers):
         return min(divisionResults)
     
     else:
+        pivotPosition = np.argmin(divisionResults)   #obtiene el índice del minimo valor
         """pivot = min(divisionResults)
 
         for pos in validDivisionPositions:
@@ -547,7 +548,7 @@ Description:
 def addIterationToFinalSolution(f,optimal,iterationNumber):
     spaceBetweenX = 5
     spaceForEachX = 6
-    f.write("Status: " + str(iterationNumber) + "\n\n")
+    f.write("\nStatus: " + str(iterationNumber) + "\n\n")
     f.write("BV |   ")
     
     for number in intTotalVariables:
