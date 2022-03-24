@@ -113,7 +113,7 @@ def saveInformationFromFile(fileName):
         newObjectiveFunctionForm = secondLine.split(sep=',')
 
         while i <= len(newObjectiveFunctionForm) - 1:
-            objectiveFunction.append(float(newObjectiveFunctionForm[i]) * -1)
+            objectiveFunction.append(round(float(newObjectiveFunctionForm[i]) * -1 , 5))
             i+=1
         
         objectiveFunction.append(0)                                                 #Se agrega el 0 del lado derecho
