@@ -7,41 +7,49 @@ rightSide = []
 rowsToOperateOn = []
 numbersToOperateOn = []
 
-#Cambiar nombre de funcion
 def validateSpecialCases(request,dividingNumbers):
-    divisionResults = []
+    totalDivisionResults = []
     numbersToDivide = rightSide[1:]
-   
+    numbersDivisionResults = []
+
     i = 0
     j = 0
     while i <= len(dividingNumbers) - 1:
 
         if dividingNumbers[i] < 0 or dividingNumbers[i] == 0:
-            divisionResults.append("invalidNumber")                                   # si el numero que se divide es negativo se agrega en esa posicion un "invalid"
+            totalDivisionResults.append("invalidNumber")                                   # si el numero que se divide es negativo se agrega en esa posicion un "invalid"
             i += 1
         
         else:
             if numbersToDivide[i] < 0:                                                  #si el numero que se divide es negativo se agrega en esa posicion un "invalid"
-                divisionResults.append("invalidNumber")                                  
+                totalDivisionResults.append("invalidNumber")                                  
                 i += 1
             else:           
-                divisionResults.append(numbersToDivide[i] / dividingNumbers[i])
+                totalDivisionResults.append(numbersToDivide[i] / dividingNumbers[i])
+                numbersDivisionResults.append(numbersToDivide[i] / dividingNumbers[i])
                 i += 1
 
-    pivot = rightSide[np.argmin(divisionResults)]
 
-    if request == "is bounded?":
-        if divisionResults == []:
+    if request == "is non bounded?":
+        if numbersDivisionResults == []:
             return True
         else:
             return False
     
-    #elif request == "is degenerate?":              #falta implementar
-            #Abajo hay una funcion que verifica si es degenerada, REVISAR
+    elif request == "is degenerate?": 
+        minorNumber = totalDivisionResults[np.argmin(totalDivisionResults)]             
+        
+        if(totalDivisionResults.count(minorNumber)) > 1:                 # si el menor numero de los resultados al dividir se encuentra mas de 1 vez
+            return True
+        
+        else:
+            return False
+            
+
             
     
     else:                                                                   #Se solicita la fila donde esta el numero pivot
-        pivotRowPosition = np.argmin(divisionResults) + 1                       #obtiene el índice del minimo valor. Se le suma 1 ya que se ignora la restriccion en la pos 0
+        pivotRowPosition = np.argmin(totalDivisionResults) + 1                       #obtiene el índice del minimo valor. Se le suma 1 ya que se ignora la restriccion en la pos 0
         return pivotRowPosition
 
 def getColumnDividingNumbers(minNumberPosition):
@@ -55,49 +63,9 @@ def getColumnDividingNumbers(minNumberPosition):
 
     return dividingNumbers
 
-"""def getMinNumberPosition():                                             #funciona como columna del pivot
-    objectiveFunction = restrictionsMatrix[0]
-    i = 0
-
-    while i <= len(objectiveFunction) - 1:
-        if objectiveFunction[i] < 0:
-            firstNumberFound = objectiveFunction[i]
-            i = len(objectiveFunction)
-        
-        i += 1
-    
-    minorNumberFound = firstNumberFound
-    minNumberPosition = 0
-    j = 0
-    while j <= len(objectiveFunction) - 1:
-        if objectiveFunction[j] < minorNumberFound:
-            minorNumberFound = objectiveFunction[j]
-            minNumberPosition = j
-            j += 1
-        
-        j += 1
-
-    print(minorNumberFound, minNumberPosition)
-    return minNumberPosition    """                                          #se devuelve la posicion en la que esta el menor numero encontrado. Si hay varios se da prioridad al de + a la izquierda
-
-"""def isDegenerateSolution(minNumberPosition):
-
-    contRepeatedNumbers = 0
-    searchedNumber = restrictionsMatrix[0][minNumberPosition]
-
-    for number in restrictionsMatrix[0]:
-        if number == searchedNumber:
-            contRepeatedNumbers += 1
-    
-    if contRepeatedNumbers > 1:                 #si hay mas de un numero repetido (el mismo), es solucion degenerada
-        return True
-    
-    else:
-        return False"""
 
 
 def isOptimal():
-    #optimal = True
 
     firstRestriction = restrictionsMatrix[0]
     minPosNumber = np.argmin(firstRestriction)
@@ -109,22 +77,6 @@ def isOptimal():
     
     else:
         return False
-
-    """for number in restrictionsMatrix[0]:
-        if number < 0:
-            return False
-    
-    return True"""
-
-"""    i = 0
-    while i <= len(restrictionsMatrix[0]):
-        if restrictionsMatrix[0][i] < 0:
-            optimal = False
-    
-    return optimal"""
-    
-
-
 
 
 def transposeMatrix(matrix):
@@ -184,7 +136,6 @@ def resetOperableList():
 def rowOperations(matrix,restriction,mainColumn,mainRow):
 
     i = 0
-   # newRow = []
 
     while i <= len(rowsToOperateOn) - 1:
         newRow = []
@@ -224,7 +175,7 @@ def improveNumbersPresentation(matrix,list):
                     j += 1
                 
                 else:
-                    matrix[i][j] = float(matrix[i][j])
+                    matrix[i][j] = float(round(matrix[i][j],5))
                     j += 1
             
             else:
@@ -249,10 +200,52 @@ def improveNumbersPresentation(matrix,list):
                 k += 1
                 
             else:
-                list[k] = float(list[k])
+                list[k] = float(round(list[k],5))
                 k += 1
             
         else:
             list[k] = int(list[k])
             k += 1
 
+
+def uptadeNonBasicVariables(nBV):
+    
+    difVariables = []
+
+    for variable in strTotalVariables:
+        if variable not in bV:
+            difVariables.append(variable)
+    
+    while nBV != []:
+        nBV.pop(0)
+    
+    for variable in difVariables:
+        nBV.append(variable)
+    
+
+def printFinalSolution(augmentedSolution, optimal):
+    print("Final Augmented Solution -> U = "+ str(augmentedSolution))
+    
+    if optimal == True:
+        print("Optimal Solution\n")
+    
+    else:
+        print("Not Optimal Solution\n")
+
+#se revisa si hay ceros en alguna variable no basica y se obtiene la posicion de una de ellas para usar oco pivot
+def checkZerosInNonBasicVariables(request,nBV):
+    newPivotColum = -1
+
+    for variable in nBV:
+        if restrictionsMatrix[0][int(variable[1]) - 1] == 0:
+            newPivotColum = int(variable[1]) - 1
+    
+    if request == "new pivot column?":
+        return newPivotColum
+    
+    else:
+        if newPivotColum != -1:
+            return True                     # si hay 0's en alguna de las variables no basicas
+        
+        else:                               # no hay 0's en las variables no basicas
+            return False
