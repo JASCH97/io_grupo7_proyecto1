@@ -5,6 +5,8 @@ from readAndSaveTxtInformation import fileOut as f
 bVIn = [0]
 bVOut = [0]
 pivotNumber = [0]
+nonBoundedSolution = [False]
+#degenerateSolution = [False]
 
 """
 Function:
@@ -12,7 +14,7 @@ Input:
 Output:
 Description: 
 """
-def addIterationToFinalSolution(optimal,iterationNumber):
+def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateSolution,nonBoundedSolution,multipleSolutions):
 
     spaceBetweenX = 5
     spaceForEachX = 6
@@ -29,7 +31,7 @@ def addIterationToFinalSolution(optimal,iterationNumber):
 
     f[0].write("---|")
     f[0].write( (11* (contVariables[0])) * "-")
-    f[0].write("-|----\n")
+    f[0].write("-|---------\n")
 
 
     contBvLeft = len(bV) - 1
@@ -68,36 +70,39 @@ def addIterationToFinalSolution(optimal,iterationNumber):
         #linea divisoria de abajo
         f[0].write("\n---|")
         f[0].write( (11* (contVariables[0])) * "-")
-        f[0].write("-|----\n")
+        f[0].write("-|---------\n")
     
         j += 1
 
 
     if iterationNumber == 0:
-        f[0].write("\nAugmented Initial Solution:\n")
+        f[0].write("\nAugmented Initial Solution:  ")
     
     elif iterationNumber > 0:
-        f[0].write("\nAugmented Solution:\n")
+        f[0].write("\nAugmented Solution:  ")
 
     f[0].write("(")
         
-    zeroVariables = numberOfDecisionVariables[0]
-    while zeroVariables != 0:
-        f[0].write(" 0" + ",")
-        zeroVariables -= 1
+    
+    
+    k = 0
+
+    while k <= len(augmentedSolution) - 1:
+        if k == len(augmentedSolution) - 1:
+            f[0].write(" " + str(augmentedSolution[k]) + " )")
+            k += 1
         
-    posNextSolutionValue = numberOfDecisionVariables[0] - 1
-    while posNextSolutionValue <= len(rightSide) - 1:
-        if posNextSolutionValue ==  len(rightSide) - 1:
-            f[0].write(" "+ str(rightSide[posNextSolutionValue]) + " )")
-            posNextSolutionValue += 1
-            
         else:
-            f[0].write(" "+ str(rightSide[posNextSolutionValue]) + ",")
-            posNextSolutionValue += 1
+            f[0].write(" " + str(augmentedSolution[k]) + ",")
+            k += 1
 
-    f[0].write("          U = " + str(rightSide[0]))
 
+    f[0].write("  -->    U = " + str(rightSide[0]))
+
+    
+    if degenerateSolution == True:
+        f[0].write("\nThe solution is degenerate.\nThere are two or more minimum coefficients on the right side with the same value")
+    
     if(optimal == False):
         f[0].write("\nNot Optimal Result")
         
@@ -113,8 +118,15 @@ def addIterationToFinalSolution(optimal,iterationNumber):
         f[0].write(str(variable) + "  ")
 
     if iterationNumber > 0:
-        f[0].write("\nBV incoming = " + bVIn[0] + "\nBV outcoming = " + bVOut[0] + "\nPivote Number = " + str(pivotNumber[0]))
+        f[0].write("\nBV incoming = " + bVIn[0] + "\nBV outcoming = " + bVOut[0] + "\nPivot Number = " + str(pivotNumber[0]))
+    
+    if nonBoundedSolution == True:
+        f[0].write("\nThis problem has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nCannot continue.")
+        f[0].write("\n")
 
+    if multipleSolutions == True:
+        f[0].write("\nIn one of the non-basic variables of the previous iteration, a 0 is found.\nThat is why this problem has multiple solutions.")
+        f[0].write("\n")
 
     f[0].write("\n")
 
@@ -129,6 +141,4 @@ def getPivotAndVariablesInfo(incoming,outcoming,pivot):
     bVIn[0] = incoming
     bVOut[0] = outcoming
     pivotNumber[0] = pivot
-
-
 
