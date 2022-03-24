@@ -12,5 +12,4 @@ if selectedMethod[0] == 0 and verifyInequalities() == "simplex":                
     createSimplexTabularForm()
     simplexMethod()
 
-    #print(restrictionsMatrix)
 #NOTA IMPORTANTE: Declarar varaibles e igualarlas a alguna otra no funciona de manera global, con append si!!
