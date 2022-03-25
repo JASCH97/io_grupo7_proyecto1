@@ -37,10 +37,12 @@ def simplexMethod():
             dividingNumbers = getColumnDividingNumbers(pivotCol)                            #numeros que dividen el lado derecho
             nonBoundedSolution = validateSpecialCases("is non bounded?",dividingNumbers)
 
-            if nonBoundedSolution == True:                                          
-                print("\nThe next iteration has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nCannot continue.\n")
-                addIterationToFinalSolution(optimal, iterationNumber,augmentedSolution,degenerateFlag,True,False)
-                printFinalSolution(augmentedSolution,optimal)
+            if nonBoundedSolution == True:  
+                print("\n")    
+                printFinalSolution(augmentedSolution,optimal)                                    
+                print("The next iteration has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nThe problem has no solution.\n")
+                #addIterationToFinalSolution(optimal, iterationNumber,augmentedSolution,degenerateFlag,True,False)
+                f[0].write("The next iteration has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nThe problem has no solution.\n")
                 exit(0)
             
             else:
@@ -81,7 +83,7 @@ def simplexMethod():
 
 
 def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
-    previousSolution = "Final Augmented Solution 1 -> U = " + str(augmentedSolution)
+    previousSolution = "Final Augmented Solution 1 -> "+ str(augmentedSolution) + "\n->  U = " + str(rightSide[0])
     degenerateFlag = False
 
     if degenerateCont > 0:
@@ -135,7 +137,7 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
 
             print("\nThis problem has multiple solutions. You will find more details in the output txt file.")
             print(previousSolution)
-            print("Final Augmented Solution 2 -> U = "+ str(augmentedSolution))
+            print("Final Augmented Solution 2 -> "+ str(augmentedSolution) + "\n->  U = " + str(rightSide[0]))
             print("Both Are Optimal Solutions\n")
 
     else:
