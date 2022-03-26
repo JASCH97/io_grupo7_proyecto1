@@ -60,7 +60,11 @@ def augmentedForm():
             slackVariables.append("R" + str(contSlackAdded))
             artificialVariables.append("R" + str(contSlackAdded))
         intBvariables.append(contSlackAdded)
-    
+    print("RES MATRIOX",restrictionsMatrix)
+    print(contSlackAdded)
+    print(slackVariables)
+    print(intBvariables)
+    print(restrictionsInequalities)
 
 """
 Function: defineBasicAndNoBasicVariables
@@ -75,16 +79,21 @@ def defineStarterBasicAndNoBasicVariables():
     global contVariables
     global intTotalVariables
 
-    # se usan las variables de holgura para definir variables basicas
     for variable in slackVariables:
-        if variable[0] != '-':
-            bV.append(variable)
-        strTotalVariables.append(variable)
+        bV.append(variable)
+
     i = 1
-    
+
     while i <= numberOfDecisionVariables[0]:
         nBV.append("x" + str(i))
-        i+=1
+        i+=1 
+
+    for variable in nBV:
+        strTotalVariables.append(variable)
+
+    for variable in bV[:]:
+        if variable[0] == '-':
+            bV.remove(variable)
         strTotalVariables.append(variable)
 
     contVariables.append(len(strTotalVariables))
@@ -93,6 +102,7 @@ def defineStarterBasicAndNoBasicVariables():
     while j <= contVariables[0]:
         intTotalVariables.append(j)
         j += 1
+    
 
 
 """
