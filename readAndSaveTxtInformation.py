@@ -5,7 +5,7 @@ fileOut = []
 firstLine = []
 secondLine = []
 stringRestrictions = []
-
+optimization = []
 selectedMethod = []
 numberOfDecisionVariables = []
 numberOfRestrictions = []
@@ -104,6 +104,7 @@ def saveInformationFromFile(fileName):
         numberOfDecisionVariables.append(int(firstLine[6:7]))
         numberOfRestrictions.append(int(firstLine[8:9]))
         selectedMethod.append(int(firstLine[0]))
+        optimization.append(firstLine[2:5])
 
         while i <= len(lines) -1:
             stringRestrictions = stringRestrictions + [information[i]]
