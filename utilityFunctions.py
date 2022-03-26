@@ -224,13 +224,13 @@ def uptadeNonBasicVariables(nBV):
     
 
 def printFinalSolution(augmentedSolution, optimal):
-    print("Final Augmented Solution -> U = "+ str(augmentedSolution))
+    print("Final Augmented Solution -> "+ str(augmentedSolution))
     
     if optimal == True:
-        print("Optimal Solution\n")
+        print("Optimal Solution ->  U = " + str(rightSide[0]) + "\n")
     
     else:
-        print("Not Optimal Solution\n")
+        print("Not Optimal Solution ->  U = " + str(rightSide[0]) + "\n")
 
 #se revisa si hay ceros en alguna variable no basica y se obtiene la posicion de una de ellas para usar oco pivot
 def checkZerosInNonBasicVariables(request,nBV):
