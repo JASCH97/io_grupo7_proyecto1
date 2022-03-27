@@ -7,6 +7,7 @@ intBvariables = []
 intTotalVariables = []
 contVariables = []
 strTotalVariables = []
+artificialVariables = []
 
 """
 Function: verifyInequalities
@@ -48,12 +49,40 @@ def augmentedForm(method):
             slackVariables.append("x" + str(contSlackAdded))
             intBvariables.append(contSlackAdded)
 
-
-    #Excess, artificial and M variables are added
-    #elif method == 1:                                                           #For big M method
-
-
-    #else:                                                                       #For two-phase method
+"""
+Function: augmentedFormGreatM
+Input: -
+Output: -
+Description: Function that takes the restrictions matrix and passes it to its augmented form 
+"""
+def augmentedFormGreatM():
+    global restrictionsMatrix
+    global slackVariables
+    global intBvariables
+    global artificialVariables
+    
+    #Only the slack variables are added
+    i = 1
+    contSlackAdded = numberOfDecisionVariables[0]                              #Slack variables are created using the number of decision variables
+    while i <= len(restrictionsMatrix) - 1:
+        if restrictionsInequalities[i - 1] == '<=':
+            i += 1
+            contSlackAdded += 1
+            slackVariables.append("x" + str(contSlackAdded))
+        elif restrictionsInequalities[i - 1] == '=':
+            i += 1
+            contSlackAdded += 1
+            slackVariables.append("a" + str(contSlackAdded))
+            artificialVariables.append("a" + str(contSlackAdded))
+        elif restrictionsInequalities[i - 1] == '>=':
+            i += 1
+            contSlackAdded += 1
+            slackVariables.append("s" + str(contSlackAdded))
+            intBvariables.append(contSlackAdded)
+            contSlackAdded += 1
+            slackVariables.append("a" + str(contSlackAdded))
+            artificialVariables.append("a" + str(contSlackAdded))
+        intBvariables.append(contSlackAdded)                                                                    #For two-phase method
 
 
 """
@@ -81,11 +110,9 @@ def defineStarterBasicAndNoBasicVariables(method):
         
         for variable in nBV:
             strTotalVariables.append(variable)
-            #contVariables = contVariables + 1
 
         for variable in bV: 
             strTotalVariables.append(variable)
-            #contVariables = contVariables + 1
 
         contVariables.append(len(strTotalVariables))
 
@@ -95,8 +122,30 @@ def defineStarterBasicAndNoBasicVariables(method):
             j += 1
 
     
-    #elif method == 1:                                                  #si el metodo es gran M...
+    elif method == 1:                                                  #si el metodo es gran M...
+        for variable in slackVariables:
+            bV.append(variable)
 
+        i = 1
+
+        while i <= numberOfDecisionVariables[0]:
+            nBV.append("x" + str(i))
+            i+=1 
+
+        for variable in nBV:
+            strTotalVariables.append(variable)
+
+        for variable in bV[:]:
+            if variable[0] == 's':
+                bV.remove(variable)
+            strTotalVariables.append(variable)
+
+        contVariables.append(len(strTotalVariables))
+
+        j = 1
+        while j <= contVariables[0]:
+            intTotalVariables.append(j)
+            j += 1
 
     #else:                                                              #si el metodo es dos fases...
 
