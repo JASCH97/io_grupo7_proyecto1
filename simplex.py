@@ -8,14 +8,15 @@ extractInformationFromRestrictions()     # se lee el documento y se extraen en l
 
 if selectedMethod[0] == 0 and verifyInequalities() == "simplex":                              #Se valida que se pueda simplex
     
-    augmentedForm(0)
-    defineStarterBasicAndNoBasicVariables(0)
+    augmentedForm()
+    defineStarterBasicAndNoBasicVariables()
     createSimplexTabularForm()
     simplexMethod()
 
 elif selectedMethod[0] == 1 and verifyInequalities() == "no simplex":
-    augmentedFormGreatM() # para gran M
-    defineStarterBasicAndNoBasicVariables(1)
+    
+    augmentedForm() # para gran M
+    defineStarterBasicAndNoBasicVariables()
     createGreatMTabularForm()
     #simplexMethod()
 #NOTA IMPORTANTE: Declarar varaibles e igualarlas a alguna otra no funciona de manera global, con append si!!
