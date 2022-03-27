@@ -12,10 +12,9 @@ if selectedMethod[0] == 0 and verifyInequalities() == "simplex":                
     createSimplexTabularForm()
     #simplexMethod()
 
-elif selectedMethod[0] == 1 or verifyInequalities() == "no simplex": ## nose que es selectedMethod, ask Joan
+elif selectedMethod[0] == 1 or verifyInequalities() == "no simplex":
     augmentedForm() # para gran M
     defineStarterBasicAndNoBasicVariables()
-    appropriateForm()
-    #createGreatMTabularForm()
+    createGreatMTabularForm()
     #modifyRestrictionsForTabularForm()
 #NOTA IMPORTANTE: Declarar varaibles e igualarlas a alguna otra no funciona de manera global, con append si!!

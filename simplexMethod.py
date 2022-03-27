@@ -169,7 +169,7 @@ def getAugmentedSolutionSimplex():
         k += 1
 
 """
-Function: createTabularForm
+Function: createSimplexTabularForm
 Input: -
 Output: -
 Description: Function that takes the restrictions with the slack variables and converts them in to tabular form for simplex method
@@ -178,7 +178,6 @@ def createSimplexTabularForm():
 
     global rightSide
     global restrictionsMatrix
-
     #Quita de las restricciones el numero que va en el lado derecho
     for restriction in restrictionsMatrix:
         rightSide.append(restriction[len(restriction) - 1])
@@ -190,7 +189,6 @@ def createSimplexTabularForm():
             None
         else:
             restriction.pop(len(restriction) - 1)
-    
     modifyRestrictionsForTabularForm()
 
 
@@ -205,18 +203,17 @@ def modifyRestrictionsForTabularForm():
     nextOnePosition = len(restrictionsMatrix[0])  
     while i <= len(restrictionsMatrix) - 1:
         contVariablesLeft = contVariables[0] - len(restrictionsMatrix[i])
-
+        
         while contVariablesLeft != 0:
 
             restrictionsMatrix[i].append(0)
             contVariablesLeft -= 1
 
         i += 1
-
+    
     i = 1
     while i <= len(restrictionsMatrix) - 1:
 
         restrictionsMatrix[i][nextOnePosition] = 1
         nextOnePosition += 1
         i += 1
-

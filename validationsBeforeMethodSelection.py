@@ -41,7 +41,8 @@ def augmentedForm():
     i = 1
     contSlackAdded = numberOfDecisionVariables[0]                              #Slack variables are created using the number of decision variables
     while i <= len(restrictionsMatrix) - 1:
-        restrictionsMatrix[i].insert(len(restrictionsMatrix[i]) -1,1)       #el 1 de excess para luego quitarlo y ponerlo al lado derecho
+        if selectedMethod == 0:
+            restrictionsMatrix[i].insert(len(restrictionsMatrix[i]) -1,1)       #el 1 de excess para luego quitarlo y ponerlo al lado derecho
         if restrictionsInequalities[i - 1] == '<=':
             i += 1
             contSlackAdded += 1
@@ -49,16 +50,16 @@ def augmentedForm():
         elif restrictionsInequalities[i - 1] == '=':
             i += 1
             contSlackAdded += 1
-            slackVariables.append("R" + str(contSlackAdded))
-            artificialVariables.append("R" + str(contSlackAdded))
+            slackVariables.append("a" + str(contSlackAdded))
+            artificialVariables.append("a" + str(contSlackAdded))
         elif restrictionsInequalities[i - 1] == '>=':
             i += 1
             contSlackAdded += 1
-            slackVariables.append("-x" + str(contSlackAdded))
+            slackVariables.append("s" + str(contSlackAdded))
             intBvariables.append(contSlackAdded)
             contSlackAdded += 1
-            slackVariables.append("R" + str(contSlackAdded))
-            artificialVariables.append("R" + str(contSlackAdded))
+            slackVariables.append("a" + str(contSlackAdded))
+            artificialVariables.append("a" + str(contSlackAdded))
         intBvariables.append(contSlackAdded)
     print("RES MATRIOX",restrictionsMatrix)
     print(contSlackAdded)
@@ -92,7 +93,7 @@ def defineStarterBasicAndNoBasicVariables():
         strTotalVariables.append(variable)
 
     for variable in bV[:]:
-        if variable[0] == '-':
+        if variable[0] == 's':
             bV.remove(variable)
         strTotalVariables.append(variable)
 
