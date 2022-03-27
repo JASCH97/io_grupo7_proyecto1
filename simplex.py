@@ -10,11 +10,11 @@ if selectedMethod[0] == 0 and verifyInequalities() == "simplex":                
     augmentedForm()
     defineStarterBasicAndNoBasicVariables()
     createSimplexTabularForm()
-    #simplexMethod()
+    simplexMethod()
 
 elif selectedMethod[0] == 1 or verifyInequalities() == "no simplex":
     augmentedForm() # para gran M
     defineStarterBasicAndNoBasicVariables()
     createGreatMTabularForm()
-    #modifyRestrictionsForTabularForm()
+    #simplexMethod()
 #NOTA IMPORTANTE: Declarar varaibles e igualarlas a alguna otra no funciona de manera global, con append si!!

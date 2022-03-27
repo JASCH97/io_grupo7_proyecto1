@@ -129,7 +129,7 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
 
             improveNumbersPresentation(restrictionsMatrix,rightSide)
             getAugmentedSolutionSimplex() 
-                                     #
+
             optimal = isOptimal()
                 
             addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,True)     
