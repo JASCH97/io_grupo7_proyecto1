@@ -32,39 +32,17 @@ Input: -
 Output: -
 Description: Function that takes the restrictions matrix and passes it to its augmented form 
 """
-def augmentedForm(method):
-    global restrictionsMatrix
-    global slackVariables
-    global intBvariables
-    
-    #Only the slack variables are added
-    if method == 0:                                                             #For simplex method
-        contSlackAdded = numberOfDecisionVariables[0]                              #Slack variables are created using the number of decision variables
-        i = 1
-
-        while i <= len(restrictionsMatrix) - 1:
-            restrictionsMatrix[i].insert(len(restrictionsMatrix[i]) -1,1)
-            i +=1
-            contSlackAdded += 1
-            slackVariables.append("x" + str(contSlackAdded))
-            intBvariables.append(contSlackAdded)
-
-"""
-Function: augmentedFormGreatM
-Input: -
-Output: -
-Description: Function that takes the restrictions matrix and passes it to its augmented form 
-"""
-def augmentedFormGreatM():
+def augmentedForm():
     global restrictionsMatrix
     global slackVariables
     global intBvariables
     global artificialVariables
-    
-    #Only the slack variables are added
+
     i = 1
     contSlackAdded = numberOfDecisionVariables[0]                              #Slack variables are created using the number of decision variables
     while i <= len(restrictionsMatrix) - 1:
+        if selectedMethod[0] == 0:
+            restrictionsMatrix[i].insert(len(restrictionsMatrix[i]) -1,1)
         if restrictionsInequalities[i - 1] == '<=':
             i += 1
             contSlackAdded += 1
@@ -82,7 +60,7 @@ def augmentedFormGreatM():
             contSlackAdded += 1
             slackVariables.append("a" + str(contSlackAdded))
             artificialVariables.append("a" + str(contSlackAdded))
-        intBvariables.append(contSlackAdded)                                                                    #For two-phase method
+        intBvariables.append(contSlackAdded)                                                                    #For two-phase method   
 
 
 """
@@ -91,63 +69,37 @@ Input: -
 Output: -
 Description: Function that defines which are the basic and non-basic variables at the beginning of the problem.
 """
-def defineStarterBasicAndNoBasicVariables(method):
+def defineStarterBasicAndNoBasicVariables():
     global bV
     global nBV
     global strTotalVariables
     global contVariables
     global intTotalVariables
 
-    if method == 0:                                                 #si el metodo es simplex, se usan las variables de holgura para definir variables basicas
-        for variable in slackVariables:
-            bV.append(variable)
+    # se usan las variables de holgura para definir variables basicas
+    for variable in slackVariables:
+        bV.append(variable)
 
-        i = 1
-        
-        while i <= numberOfDecisionVariables[0]:
-            nBV.append("x" + str(i))
-            i+=1 
-        
-        for variable in nBV:
-            strTotalVariables.append(variable)
+    i = 1
 
-        for variable in bV: 
-            strTotalVariables.append(variable)
+    while i <= numberOfDecisionVariables[0]:
+        nBV.append("x" + str(i))
+        i+=1 
 
-        contVariables.append(len(strTotalVariables))
+    for variable in nBV:
+        strTotalVariables.append(variable)
 
-        j = 1
-        while j <= contVariables[0]:
-            intTotalVariables.append(j)
-            j += 1
+    for variable in bV[:]:
+        if variable[0] == 's':
+            bV.remove(variable)
+        strTotalVariables.append(variable)
 
-    
-    elif method == 1:                                                  #si el metodo es gran M...
-        for variable in slackVariables:
-            bV.append(variable)
+    contVariables.append(len(strTotalVariables))
 
-        i = 1
-
-        while i <= numberOfDecisionVariables[0]:
-            nBV.append("x" + str(i))
-            i+=1 
-
-        for variable in nBV:
-            strTotalVariables.append(variable)
-
-        for variable in bV[:]:
-            if variable[0] == 's':
-                bV.remove(variable)
-            strTotalVariables.append(variable)
-
-        contVariables.append(len(strTotalVariables))
-
-        j = 1
-        while j <= contVariables[0]:
-            intTotalVariables.append(j)
-            j += 1
-
-    #else:                                                              #si el metodo es dos fases...
+    j = 1
+    while j <= contVariables[0]:
+        intTotalVariables.append(j)
+        j += 1
 
 
 """
