@@ -26,8 +26,8 @@ def simplexMethod():
         if iterationNumber == 0:
             optimal = isOptimal()                                               #Se pregunta si la solucion aumentada es optima 
             getAugmentedSolutionSimplex()                                       #Al ser primer estado simplemente se da la solucion aumentada e informacion de variables
-            improveNumbersPresentation(restrictionsMatrix, rightSide)
-            improveNumbersPresentation(restrictionsMatrix, augmentedSolution)               #se hace un llamado extra para limpiar la solicion aumentada
+            #improveNumbersPresentation(restrictionsMatrix, rightSide)
+            #improveNumbersPresentation(restrictionsMatrix, augmentedSolution)               #se hace un llamado extra para limpiar la solicion aumentada
             addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,False,False)              #Se agrega el estado 0 al archivo de salida txt
             iterationNumber += 1
             
@@ -71,7 +71,7 @@ def simplexMethod():
 
                 resetOperableList()                                         
 
-                improveNumbersPresentation(restrictionsMatrix,rightSide)
+                #improveNumbersPresentation(restrictionsMatrix,rightSide)
                 getAugmentedSolutionSimplex() 
                                     
                 optimal = isOptimal()

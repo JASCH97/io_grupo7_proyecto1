@@ -20,12 +20,12 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
     spaceForEachX = 6
     f[0].write("\nStatus: " + str(iterationNumber) + "\n\n")
     f[0].write("BV |   ")
-    
-    for number in intTotalVariables:
-        if number == intTotalVariables[len(intTotalVariables) - 1]:
-            f[0].write("x"+str(number))
+
+    for variable in strTotalVariables:
+        if variable == strTotalVariables[len(strTotalVariables) - 1]:
+            f[0].write(str(variable))
         else:
-            f[0].write("x"+str(number)+"         ")
+            f[0].write(str(variable) +"         ")
 
     f[0].write("       | RS\n") 
 

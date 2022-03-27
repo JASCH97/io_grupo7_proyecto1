@@ -66,15 +66,18 @@ def getColumnDividingNumbers(minNumberPosition):
 
 
 def isOptimal():
-
-    firstRestriction = restrictionsMatrix[0]
-    minPosNumber = np.argmin(firstRestriction)
-
-    minNumber = restrictionsMatrix[0][minPosNumber]
-
+    if selectedMethod[0] == 0:
+        firstRestriction = restrictionsMatrix[0]
+        minPosNumber = np.argmin(firstRestriction)
+        
+        minNumber = restrictionsMatrix[0][minPosNumber]
+    else:
+        firstRestriction = np.array(restrictionsMatrix[0])
+        minPosNumber = np.argmin(firstRestriction.imag)
+        minNumber = firstRestriction.imag[minPosNumber]
+        
     if minNumber > 0 or minNumber == 0:
         return True
-    
     else:
         return False
 

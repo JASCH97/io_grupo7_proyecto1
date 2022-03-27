@@ -75,7 +75,7 @@ def appropriateFormOperations():
 Function: removeRightSide
 Input: -
 Output: -
-Description: Function that takes the restrictions with the slack variables and converts them in to tabular form for simplex method
+Description: Function that takes the restrictions and separates the right side from the slack variables
 """
 def removeRightSide():
     global rightSide
