@@ -5,7 +5,7 @@ fileOut = []
 firstLine = []
 secondLine = []
 stringRestrictions = []
-optimization = []
+
 selectedMethod = []
 numberOfDecisionVariables = []
 numberOfRestrictions = []
@@ -101,11 +101,9 @@ def saveInformationFromFile(fileName):
         
         firstLine = information[0]
         secondLine = information[1]
-        separatedLine = firstLine.split(",")
-        numberOfDecisionVariables.append(int(separatedLine[2]))
-        numberOfRestrictions.append(int(separatedLine[3]))
-        selectedMethod.append(int(separatedLine[0]))
-        optimization.append(separatedLine[1])
+        numberOfDecisionVariables.append(int(firstLine[6:7]))
+        numberOfRestrictions.append(int(firstLine[8:9]))
+        selectedMethod.append(int(firstLine[0]))
 
         while i <= len(lines) -1:
             stringRestrictions = stringRestrictions + [information[i]]
@@ -148,7 +146,7 @@ def extractInformationFromRestrictions():
                 restrictionsInequalities.append(newRestictionForm[i])
                 newRestictionForm.remove(newRestictionForm[i])
 
-            newRestictionForm[i] = float(newRestictionForm[i])
+            newRestictionForm[i] = round(float(newRestictionForm[i]) , 5)
             i+=1
     
 

@@ -25,8 +25,8 @@ def validateSpecialCases(request,dividingNumbers):
                 totalDivisionResults.append("invalidNumber")                                  
                 i += 1
             else:           
-                totalDivisionResults.append(numbersToDivide[i] / dividingNumbers[i])
-                numbersDivisionResults.append(numbersToDivide[i] / dividingNumbers[i])
+                totalDivisionResults.append(round((numbersToDivide[i] / dividingNumbers[i]), 5))
+                numbersDivisionResults.append(round((numbersToDivide[i] / dividingNumbers[i]) , 5))
                 i += 1
 
 
@@ -48,9 +48,21 @@ def validateSpecialCases(request,dividingNumbers):
 
             
     
-    else:                                                                   #Se solicita la fila donde esta el numero pivot
-        pivotRowPosition = np.argmin(totalDivisionResults) + 1                       #obtiene el índice del minimo valor. Se le suma 1 ya que se ignora la restriccion en la pos 0
+    else:  
+        maxValue = max(numbersDivisionResults)
+        k = 0
+        while k <= len(totalDivisionResults) - 1:
+            if type(totalDivisionResults[k]) == str:
+                totalDivisionResults[k] = maxValue
+                k += 1
+            
+            k += 1
+
+        pivotRowPosition = np.argmin(totalDivisionResults) + 1
+
         return pivotRowPosition
+
+     
 
 def getColumnDividingNumbers(minNumberPosition):
     dividingNumbers = []
@@ -66,18 +78,15 @@ def getColumnDividingNumbers(minNumberPosition):
 
 
 def isOptimal():
-    if selectedMethod[0] == 0:
-        firstRestriction = restrictionsMatrix[0]
-        minPosNumber = np.argmin(firstRestriction)
-        
-        minNumber = restrictionsMatrix[0][minPosNumber]
-    else:
-        firstRestriction = np.array(restrictionsMatrix[0])
-        minPosNumber = np.argmin(firstRestriction.imag)
-        minNumber = firstRestriction.imag[minPosNumber]
-        
+
+    firstRestriction = restrictionsMatrix[0]
+    minPosNumber = np.argmin(firstRestriction)
+
+    minNumber = restrictionsMatrix[0][minPosNumber]
+
     if minNumber > 0 or minNumber == 0:
         return True
+    
     else:
         return False
 
@@ -103,7 +112,7 @@ def divideRestrictionNumbers(position,pivotNumber):
     i = 0
 
     while i <= len(restrictionsMatrix[position]) - 1:
-        restrictionsMatrix[position][i] = restrictionsMatrix[position][i] / pivotNumber
+        restrictionsMatrix[position][i] = round(restrictionsMatrix[position][i] / pivotNumber , 5)
 
         i += 1
     
@@ -146,18 +155,18 @@ def rowOperations(matrix,restriction,mainColumn,mainRow):
         while j <= len(matrix[0]) - 1:
 
             if j == mainColumn:
-                newRow.append(matrix[rowsToOperateOn[i]][j])
+                newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 5))
                 j += 1
 
             else:
-                newRow.append(matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) 
+                newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 5)) 
                 j += 1
 
-        rightSide[rowsToOperateOn[i]] = rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]
+        rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]) , 5)
         matrix[rowsToOperateOn[i]] = newRow
         i += 1
     
-
+#arreglar en caso de que hayan negativos
 def improveNumbersPresentation(matrix,list):
 
     i = 0

@@ -7,7 +7,7 @@ intBvariables = []
 intTotalVariables = []
 contVariables = []
 strTotalVariables = []
-artificialVariables = []
+
 """
 Function: verifyInequalities
 Input: -
@@ -31,36 +31,30 @@ Input: -
 Output: -
 Description: Function that takes the restrictions matrix and passes it to its augmented form 
 """
-def augmentedForm():
+def augmentedForm(method):
     global restrictionsMatrix
     global slackVariables
     global intBvariables
-    global artificialVariables
     
     #Only the slack variables are added
-    i = 1
-    contSlackAdded = numberOfDecisionVariables[0]                              #Slack variables are created using the number of decision variables
-    while i <= len(restrictionsMatrix) - 1:
-        if selectedMethod == 0:
-            restrictionsMatrix[i].insert(len(restrictionsMatrix[i]) -1,1)       #el 1 de excess para luego quitarlo y ponerlo al lado derecho
-        if restrictionsInequalities[i - 1] == '<=':
-            i += 1
+    if method == 0:                                                             #For simplex method
+        contSlackAdded = numberOfDecisionVariables[0]                              #Slack variables are created using the number of decision variables
+        i = 1
+
+        while i <= len(restrictionsMatrix) - 1:
+            restrictionsMatrix[i].insert(len(restrictionsMatrix[i]) -1,1)
+            i +=1
             contSlackAdded += 1
             slackVariables.append("x" + str(contSlackAdded))
-        elif restrictionsInequalities[i - 1] == '=':
-            i += 1
-            contSlackAdded += 1
-            slackVariables.append("a" + str(contSlackAdded))
-            artificialVariables.append("a" + str(contSlackAdded))
-        elif restrictionsInequalities[i - 1] == '>=':
-            i += 1
-            contSlackAdded += 1
-            slackVariables.append("s" + str(contSlackAdded))
             intBvariables.append(contSlackAdded)
-            contSlackAdded += 1
-            slackVariables.append("a" + str(contSlackAdded))
-            artificialVariables.append("a" + str(contSlackAdded))
-        intBvariables.append(contSlackAdded)
+
+
+    #Excess, artificial and M variables are added
+    #elif method == 1:                                                           #For big M method
+
+
+    #else:                                                                       #For two-phase method
+
 
 """
 Function: defineBasicAndNoBasicVariables
@@ -68,37 +62,43 @@ Input: -
 Output: -
 Description: Function that defines which are the basic and non-basic variables at the beginning of the problem.
 """
-def defineStarterBasicAndNoBasicVariables():
+def defineStarterBasicAndNoBasicVariables(method):
     global bV
     global nBV
     global strTotalVariables
     global contVariables
     global intTotalVariables
 
-    for variable in slackVariables:
-        bV.append(variable)
+    if method == 0:                                                 #si el metodo es simplex, se usan las variables de holgura para definir variables basicas
+        for variable in slackVariables:
+            bV.append(variable)
 
-    i = 1
+        i = 1
+        
+        while i <= numberOfDecisionVariables[0]:
+            nBV.append("x" + str(i))
+            i+=1 
+        
+        for variable in nBV:
+            strTotalVariables.append(variable)
+            #contVariables = contVariables + 1
 
-    while i <= numberOfDecisionVariables[0]:
-        nBV.append("x" + str(i))
-        i+=1 
+        for variable in bV: 
+            strTotalVariables.append(variable)
+            #contVariables = contVariables + 1
 
-    for variable in nBV:
-        strTotalVariables.append(variable)
+        contVariables.append(len(strTotalVariables))
 
-    for variable in bV[:]:
-        if variable[0] == 's':
-            bV.remove(variable)
-        strTotalVariables.append(variable)
+        j = 1
+        while j <= contVariables[0]:
+            intTotalVariables.append(j)
+            j += 1
 
-    contVariables.append(len(strTotalVariables))
-
-    j = 1
-    while j <= contVariables[0]:
-        intTotalVariables.append(j)
-        j += 1
     
+    #elif method == 1:                                                  #si el metodo es gran M...
+
+
+    #else:                                                              #si el metodo es dos fases...
 
 
 """
