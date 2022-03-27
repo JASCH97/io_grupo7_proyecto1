@@ -61,11 +61,6 @@ def augmentedForm():
             slackVariables.append("a" + str(contSlackAdded))
             artificialVariables.append("a" + str(contSlackAdded))
         intBvariables.append(contSlackAdded)
-    print("RES MATRIOX",restrictionsMatrix)
-    print(contSlackAdded)
-    print(slackVariables)
-    print(intBvariables)
-    print(restrictionsInequalities)
 
 """
 Function: defineBasicAndNoBasicVariables
