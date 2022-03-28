@@ -152,23 +152,60 @@ def resetOperableList():
 def rowOperations(matrix,restriction,mainColumn,mainRow):
 
     i = 0
+    if selectedMethod[0] == 0:
+        rightSide[mainRow] = round(rightSide[mainRow], 5)
+        while i <= len(rowsToOperateOn) - 1:
+            newRow = []
+            j = 0
+            while j <= len(matrix[0]) - 1:
 
-    while i <= len(rowsToOperateOn) - 1:
-        newRow = []
-        j = 0
-        while j <= len(matrix[0]) - 1:
+                if j == mainColumn:
+                    newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 5))
+                    j += 1
 
-            if j == mainColumn:
-                newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 5))
-                j += 1
+                else:
+                    newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 5)) 
+                    j += 1
 
+            rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]) , 5)
+            matrix[rowsToOperateOn[i]] = newRow
+            i += 1
+    
+    else:
+        if type(rightSide[mainRow]) == complex:
+            rightSide[mainRow] = roundComplex(rightSide[mainRow])
+        else:
+            rightSide[mainRow] = round(rightSide[mainRow], 5)
+        while i <= len(rowsToOperateOn) - 1:
+            newRow = []
+            j = 0
+            while j <= len(matrix[0]) - 1:
+
+                if j == mainColumn:
+                    if type(matrix[rowsToOperateOn[i]][j]) == complex:
+                        newRow.append(roundComplex(matrix[rowsToOperateOn[i]][j]))
+                    else:
+                        newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 5))
+                    j += 1
+
+                else:
+                    if type(numbersToOperateOn[i]) == complex:
+                        newRow.append(roundComplex(matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]))
+                    else:
+                        newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 5)) 
+                    j += 1
+
+            if type(numbersToOperateOn[i]) == complex:
+                rightSide[rowsToOperateOn[i]] = roundComplex(rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow])
             else:
-                newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 5)) 
-                j += 1
+                
+                rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]), 5)
+            matrix[rowsToOperateOn[i]] = newRow
+            i += 1
 
-        rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]) , 5)
-        matrix[rowsToOperateOn[i]] = newRow
-        i += 1
+def roundComplex(number):
+    return round(number.real, 5) + round(number.imag, 5) * 1j
+
     
 #arreglar en caso de que hayan negativos
 def improveNumbersPresentation(matrix,list):
