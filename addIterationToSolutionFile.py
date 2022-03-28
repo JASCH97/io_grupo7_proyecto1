@@ -16,22 +16,40 @@ Description:
 """
 def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateSolution,nonBoundedSolution,multipleSolutions):
 
-    spaceBetweenX = 5
-    spaceForEachX = 6
-    f[0].write("\nStatus: " + str(iterationNumber) + "\n\n")
-    f[0].write("BV |   ")
-    
-    for variable in strTotalVariables:
-        if variable == strTotalVariables[len(strTotalVariables) - 1]:
-            f[0].write(str(variable))
-        else:
-            f[0].write(str(variable) +"         ")
+    if selectedMethod[0] == 0:
+        spaceBetweenX = 5
+        spaceForEachX = 6
+        f[0].write("\nStatus: " + str(iterationNumber) + "\n\n")
+        f[0].write("BV |   ")
+        
+        for variable in strTotalVariables:
+            if variable == strTotalVariables[len(strTotalVariables) - 1]:
+                f[0].write(str(variable))
+            else:
+                f[0].write(str(variable) +"         ")
 
-    f[0].write("       | RS\n") 
+        f[0].write("       | RS\n") 
 
-    f[0].write("---|")
-    f[0].write( (11* (contVariables[0])) * "-")
-    f[0].write("-|---------\n")
+        f[0].write("---|")
+        f[0].write( (11* (contVariables[0])) * "-")
+        f[0].write("-|---------\n")
+    else:
+        spaceBetweenX = 10
+        spaceForEachX = 11
+        f[0].write("\nStatus: " + str(iterationNumber) + "\n\n")
+        f[0].write("BV |   ")
+        
+        for variable in strTotalVariables:
+            if variable == strTotalVariables[len(strTotalVariables) - 1]:
+                f[0].write(str(variable))
+            else:
+                f[0].write(str(variable) +"                   ")
+
+        f[0].write("            | RS\n") 
+
+        f[0].write("---|")
+        f[0].write( (11* (contVariables[0])) * "-")
+        f[0].write("--------------------------------------------------------|------\n")
 
 
     contBvLeft = len(bV) - 1
@@ -70,8 +88,11 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
         #linea divisoria de abajo
         f[0].write("\n---|")
         f[0].write( (11* (contVariables[0])) * "-")
-        f[0].write("-|---------\n")
-    
+        if selectedMethod[0] == 0:
+            f[0].write("-|---------\n")
+        else:
+            f[0].write("--------------------------------------------------------|------\n")
+        
         j += 1
 
 
