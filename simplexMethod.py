@@ -32,7 +32,13 @@ def simplexMethod():
             
 
         else:
-            pivotCol = np.argmin(restrictionsMatrix[0])
+            # revisa si hay algun numero complejo en la matriz
+            if np.iscomplex(restrictionsMatrix).any():
+                modifiedMatrix = np.array(restrictionsMatrix[0])
+                pivotCol = np.argmin(modifiedMatrix[0].imag)
+            else:
+                pivotCol = np.argmin(restrictionsMatrix[0])
+            
             dividingNumbers = getColumnDividingNumbers(pivotCol)                            #numeros que dividen el lado derecho
             nonBoundedSolution = validateSpecialCases("is non bounded?",dividingNumbers)
 
