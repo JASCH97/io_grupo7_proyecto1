@@ -81,10 +81,9 @@ def defineStarterBasicAndNoBasicVariables():
         bV.append(variable)
 
     i = 1
-
     while i <= numberOfDecisionVariables[0]:
         nBV.append("x" + str(i))
-        i+=1 
+        i+=1     
 
     for variable in nBV:
         strTotalVariables.append(variable)
@@ -92,10 +91,11 @@ def defineStarterBasicAndNoBasicVariables():
     for variable in bV[:]:
         if variable[0] == 's':
             bV.remove(variable)
+            nBV.append(variable)
         strTotalVariables.append(variable)
-
+    
     contVariables.append(len(strTotalVariables))
-
+    
     j = 1
     while j <= contVariables[0]:
         intTotalVariables.append(j)
