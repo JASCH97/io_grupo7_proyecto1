@@ -18,5 +18,5 @@ elif selectedMethod[0] == 1 and verifyInequalities() == "no simplex":
     augmentedForm() # para gran M
     defineStarterBasicAndNoBasicVariables()
     createGreatMTabularForm()
-    #simplexMethod()
+    simplexMethod()
 #NOTA IMPORTANTE: Declarar varaibles e igualarlas a alguna otra no funciona de manera global, con append si!!
