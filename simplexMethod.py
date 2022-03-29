@@ -35,7 +35,8 @@ def simplexMethod():
             # revisa si hay algun numero complejo en la matriz
             if np.iscomplex(restrictionsMatrix).any():
                 modifiedMatrix = np.array(restrictionsMatrix)
-                pivotCol = np.argmin(modifiedMatrix[0].imag)
+                sumofComplex = modifiedMatrix[0].real + modifiedMatrix[0].imag*10000    #multiplica por un M grande para que siempre escoja el menor
+                pivotCol = np.argmin(sumofComplex)
             else:
                 pivotCol = np.argmin(restrictionsMatrix[0])
             
