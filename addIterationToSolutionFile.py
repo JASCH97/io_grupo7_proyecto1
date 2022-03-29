@@ -34,8 +34,8 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
         f[0].write( (11* (contVariables[0])) * "-")
         f[0].write("-|---------\n")
     else:
-        spaceBetweenX = 10
-        spaceForEachX = 11
+        spaceBetweenX = 11
+        spaceForEachX = 12
         f[0].write("\nStatus: " + str(iterationNumber) + "\n\n")
         f[0].write("BV |   ")
         
@@ -43,13 +43,13 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
             if variable == strTotalVariables[len(strTotalVariables) - 1]:
                 f[0].write(str(variable))
             else:
-                f[0].write(str(variable) +"                   ")
+                f[0].write(str(variable) +"                     ")
 
-        f[0].write("            | RS\n") 
+        f[0].write("                     | RS\n") 
 
         f[0].write("---|")
         f[0].write( (11* (contVariables[0])) * "-")
-        f[0].write("--------------------------------------------------------|------\n")
+        f[0].write("---------------------------------------------------------------------------|------\n")
 
 
     contBvLeft = len(bV) - 1
@@ -81,7 +81,9 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
                 i += 1
         
         finalSpace = spaceForEachX - len(str(restrictionsMatrix[j][len(restrictionsMatrix[j])-1])) + 3
-        #print(finalSpace)
+        if selectedMethod[0] != 0:
+            finalSpace = spaceForEachX - len(str(restrictionsMatrix[j][len(restrictionsMatrix[j])-1])) + 11
+        
         f[0].write((finalSpace * " ") + "| " + str(rightSide[j]))
         
         
@@ -91,7 +93,7 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
         if selectedMethod[0] == 0:
             f[0].write("-|---------\n")
         else:
-            f[0].write("--------------------------------------------------------|------\n")
+            f[0].write("---------------------------------------------------------------------------|------\n")
         
         j += 1
 
