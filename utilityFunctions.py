@@ -171,7 +171,7 @@ def rowOperations(matrix,restriction,mainColumn,mainRow):
             matrix[rowsToOperateOn[i]] = newRow
             i += 1
     
-    else:
+    elif selectedMethod[0] == 1:
         if type(rightSide[mainRow]) == complex:
             rightSide[mainRow] = roundComplex(rightSide[mainRow])
         else:
@@ -204,7 +204,7 @@ def rowOperations(matrix,restriction,mainColumn,mainRow):
             i += 1
 
 def roundComplex(number):
-    return round(number.real, 5) + round(number.imag, 5) * 1j
+    return round(number.real, 2) + round(number.imag, 2) * 1j
 
     
 #arreglar en caso de que hayan negativos
