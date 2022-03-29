@@ -85,8 +85,6 @@ def removeRightSide():
     for restriction in restrictionsMatrix:
         rightSide.append(restriction[len(restriction) - 1])
         restriction.remove(restriction[len(restriction) - 1])
-    print(restrictionsMatrix)
-    print(rightSide)
 
 """
 Function: createGreatMTabularForm
