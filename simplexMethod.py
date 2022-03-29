@@ -34,7 +34,7 @@ def simplexMethod():
         else:
             # revisa si hay algun numero complejo en la matriz
             if np.iscomplex(restrictionsMatrix).any():
-                modifiedMatrix = np.array(restrictionsMatrix[0])
+                modifiedMatrix = np.array(restrictionsMatrix)
                 pivotCol = np.argmin(modifiedMatrix[0].imag)
             else:
                 pivotCol = np.argmin(restrictionsMatrix[0])
@@ -65,12 +65,11 @@ def simplexMethod():
                 checkZerosInPivotColumn(restrictionsMatrix, pivotRow,pivotCol)      #se ponen 0's en la columna pivot y se obtienen indices/numeros para operar sobre renglones
                     
                 bVOutcoming = bV[pivotRow - 1]
-                bV[pivotRow - 1] = "x" + str(pivotCol+1)                                        #se resta 1 a pivotRow porque en bV no esta la U, solo las X's
+                bV[pivotRow - 1] = strTotalVariables[pivotCol]                                        #se resta 1 a pivotRow porque en bV no esta la U, solo las X's
 
                 uptadeNonBasicVariables(nBV)                                                    #Se actualizan las variables no basicas
 
                 getPivotAndVariablesInfo(bV[pivotRow - 1], bVOutcoming, pivotNumber)
-
 
                 rowOperations(restrictionsMatrix, restrictionsMatrix[pivotRow],pivotCol,pivotRow)
 
@@ -78,9 +77,9 @@ def simplexMethod():
 
                 #improveNumbersPresentation(restrictionsMatrix,rightSide)
                 getAugmentedSolutionSimplex() 
-                                    
+
                 optimal = isOptimal()
-                   
+
                 addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,False)   
                 iterationNumber += 1
 
@@ -122,7 +121,7 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
             checkZerosInPivotColumn(restrictionsMatrix, pivotRow,pivotCol)         #se ponen 0's en la columna pivot y se obtienen indices/numeros para operar sobre renglones
                 
             bVOutcoming = bV[pivotRow - 1]
-            bV[pivotRow - 1] = "x" + str(pivotCol+1)                                              #se resta 1 a pivotRow porque en bV no esta la U, solo las X's
+            bV[pivotRow - 1] = strTotalVariables[pivotCol]                                              #se resta 1 a pivotRow porque en bV no esta la U, solo las X's
 
             uptadeNonBasicVariables(nBV)                                                    #Se actualizan las variables no basicas
 
