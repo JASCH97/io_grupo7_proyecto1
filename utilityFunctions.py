@@ -89,15 +89,16 @@ Output: boolean value
 Description: Function that returns if the current answer is optimal
 """
 def isOptimal():
-    if selectedMethod[0] == 0:
+    if selectedMethod[0] == 1:
+        firstRestriction = np.array(restrictionsMatrix[0])
+        minPosNumber = np.argmin(firstRestriction.imag)
+
+        minNumber = firstRestriction.imag[minPosNumber]
+    else:
         firstRestriction = restrictionsMatrix[0]
         minPosNumber = np.argmin(firstRestriction)
         
         minNumber = restrictionsMatrix[0][minPosNumber]
-    else:
-        firstRestriction = np.array(restrictionsMatrix[0])
-        minPosNumber = np.argmin(firstRestriction.imag)
-        minNumber = firstRestriction.imag[minPosNumber]
 
     if minNumber > 0 or minNumber == 0:
         return True
@@ -189,26 +190,7 @@ Description: Function that performs operations on all rows
 def rowOperations(matrix,restriction,mainColumn,mainRow):
 
     i = 0
-    if selectedMethod[0] == 0:
-        rightSide[mainRow] = round(rightSide[mainRow], 5)
-        while i <= len(rowsToOperateOn) - 1:
-            newRow = []
-            j = 0
-            while j <= len(matrix[0]) - 1:
-
-                if j == mainColumn:
-                    newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 5))
-                    j += 1
-
-                else:
-                    newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 5)) 
-                    j += 1
-
-            rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]) , 5)
-            matrix[rowsToOperateOn[i]] = newRow
-            i += 1
-    
-    elif selectedMethod[0] == 1:
+    if selectedMethod[0] == 1:
         if type(rightSide[mainRow]) == complex:
             rightSide[mainRow] = roundComplex(rightSide[mainRow])
         else:
@@ -237,6 +219,25 @@ def rowOperations(matrix,restriction,mainColumn,mainRow):
             else:
                 
                 rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]), 5)
+            matrix[rowsToOperateOn[i]] = newRow
+            i += 1
+    
+    else:
+        rightSide[mainRow] = round(rightSide[mainRow], 5)
+        while i <= len(rowsToOperateOn) - 1:
+            newRow = []
+            j = 0
+            while j <= len(matrix[0]) - 1:
+
+                if j == mainColumn:
+                    newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 5))
+                    j += 1
+
+                else:
+                    newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 5)) 
+                    j += 1
+
+            rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]) , 5)
             matrix[rowsToOperateOn[i]] = newRow
             i += 1
 
@@ -306,3 +307,62 @@ def checkZerosInNonBasicVariables(request,nBV):
         
         else:                               # no hay 0's en las variables no basicas
             return False
+
+"""
+Function: removeRightSideMethod
+Input: -
+Output: -
+Description: Function that takes the restrictions and separates the right side from the slack variables
+"""
+def removeRightSideMethod():
+    global rightSide
+    global restrictionsMatrix
+
+    # removes right side values from restrictions matrix
+    for restriction in restrictionsMatrix:
+        rightSide.append(restriction[len(restriction) - 1])
+        restriction.remove(restriction[len(restriction) - 1])
+
+"""
+Function: checkMinimization
+Input: objective function
+Output: transformed objective function
+Description: Function that checks if the problem has to be multiplied by -1
+"""
+def checkMinimization(objectiveFunction):
+    if optimization[0] == 'min':
+        return [i * -1 for i in objectiveFunction]
+    else:
+        return objectiveFunction
+
+"""
+Function: createTabularForm
+Input: -
+Output: -
+Description: Function that takes the restrictions and adds 0s and 1s based on the slack variables
+"""
+def createTabularForm():
+    i = 1
+    nextOnePosition = len(restrictionsMatrix[1]) - 1
+    while i <= len(restrictionsMatrix) - 1:
+        contVariablesLeft = contVariables[0] - len(restrictionsMatrix[i]) + 1
+        
+        while contVariablesLeft != 0:
+            restrictionsMatrix[i].insert(nextOnePosition,0)
+            contVariablesLeft -= 1
+        i += 1
+    
+    i = 1
+    j = 0
+    while i <= len(restrictionsMatrix) - 1:
+        if slackVariables[j][0] == 'x':                                     # checks if its normal variable
+            restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = 1
+            j += 1
+            i += 1
+        if slackVariables[j][0] == 's':                                     # checks if its excess variable
+            restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = -1
+            j += 1
+        if slackVariables[j][0] == 'a':                                     # checks if its artificial variable
+            restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = 1
+            j += 1
+        i += 1
