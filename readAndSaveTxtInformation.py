@@ -54,17 +54,15 @@ def validateInputFile():
     elif len(sys.argv) == 3 and sys.argv[1] == "-h":     #the file was entered as a parameter and it requires the help message
         print(helpMessage)
         inputFileName = sys.argv[2]
-        fileName.append(inputFileName[2:len(inputFileName) - 4])
-        fileOut.append(open(fileName[0] + "_solution" + ".txt","w"))
-        #print(fileName)
-        saveInformationFromFile(sys.argv[2])
+        fileName.append(inputFileName[0:len(inputFileName) - 4])
+        fileOut.append(open("./Soluciones/" + fileName[0] + "_solution" + ".txt","w"))
+        saveInformationFromFile("./Problemas/"+sys.argv[2])
 
     elif len(sys.argv) == 2 and sys.argv[1] != "-h":     #the file was entered as a parameter and does NOT require the help message
         inputFileName = sys.argv[1]
         fileName.append(inputFileName[0:len(inputFileName) - 4]) 
-        fileOut.append(open(fileName[0] + "_solution" + ".txt","w"))     
-        #print(fileName)
-        saveInformationFromFile(sys.argv[1])
+        fileOut.append(open("./Soluciones/" + fileName[0] + "_solution" + ".txt","w"))     
+        saveInformationFromFile("./Problemas/"+sys.argv[1])
 
     else:
         print("You have entered the commands for the operation of this program incorrectly. Try again!")
