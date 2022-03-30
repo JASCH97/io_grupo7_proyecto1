@@ -15,7 +15,6 @@ Input: -
 Output: -
 Description: Function that checks the list of inequalities to know which method should be used
 """
-#Simple Version. improve later
 def verifyInequalities():
     verificationFlag = "simplex"
 
@@ -39,7 +38,7 @@ def augmentedForm():
     global artificialVariables
 
     i = 1
-    contSlackAdded = numberOfDecisionVariables[0]                              #Slack variables are created using the number of decision variables
+    contSlackAdded = numberOfDecisionVariables[0]               # slack variables are created using the number of decision variables
     while i <= len(restrictionsMatrix) - 1:
         if selectedMethod[0] == 0:
             restrictionsMatrix[i].insert(len(restrictionsMatrix[i]) -1,1)
@@ -60,7 +59,7 @@ def augmentedForm():
             contSlackAdded += 1
             slackVariables.append("a" + str(contSlackAdded))
             artificialVariables.append("a" + str(contSlackAdded))
-        intBvariables.append(contSlackAdded)                                                                    #For two-phase method   
+        intBvariables.append(contSlackAdded)
 
 
 """
@@ -76,7 +75,7 @@ def defineStarterBasicAndNoBasicVariables():
     global contVariables
     global intTotalVariables
 
-    # se usan las variables de holgura para definir variables basicas
+    # slack variables are used to define basic variables
     for variable in slackVariables:
         bV.append(variable)
 
@@ -89,7 +88,7 @@ def defineStarterBasicAndNoBasicVariables():
         strTotalVariables.append(variable)
 
     for variable in bV[:]:
-        if variable[0] == 's':
+        if variable[0] == 's':      # artificial variables take priority over slack variable so remove them from bV
             bV.remove(variable)
             nBV.append(variable)
         strTotalVariables.append(variable)
@@ -100,32 +99,3 @@ def defineStarterBasicAndNoBasicVariables():
     while j <= contVariables[0]:
         intTotalVariables.append(j)
         j += 1
-
-
-"""
-Function: selectMethod
-Input: -
-Output: -
-Description: Function that selects which method to use to solve the problem
-"""
-"""
-#Funcion que selecciona el método mediante el cual se va a resolver el problema
-def selectMethod():
-    if selectedMethod[0] == 0 and verifyInequalities() == "simplex":                              #Se valida que se pueda simplex
-        augmentedForm(0)
-        defineStarterBasicAndNoBasicVariables(0)
-        simplexMethod()
-
-
-
-
-    #elif firstLine[0] == "0" and verifyInequalities() == "no simplex":                         #El usuario pide simplex pero hay un >= o un =, se procede a gran M
-        #gran M
-    
-    #elif firstLine[0] == "1" and verifyInequalities() == "simplex":                            #El usuario pide gran M pero todas las restricciones son <=, se hace simplex
-        #simplexMethod(firstLine[2:5])
-
-    #elif firstLine[0] == "1" and verifyInequalities() == "no simplex":
-        #gran M
-
-    #agregar los casos de dos fases  """

@@ -67,7 +67,7 @@ def appropriateFormOperations():
             k += 1
         i += 1
     
-    operationsMatrix.insert(0, restrictionsMatrix[0]) #siempre va a estar la función objetivo
+    operationsMatrix.insert(0, restrictionsMatrix[0])   # objective function will always be in operations matrix
     result = np.sum(operationsMatrix, axis=0)
     restrictionsMatrix[0] = result.tolist()
 
@@ -81,7 +81,7 @@ def removeRightSide():
     global rightSide
     global restrictionsMatrix
 
-    #Quita de las restricciones el numero que va en el lado derecho
+    # removes right side values from restrictions matrix
     for restriction in restrictionsMatrix:
         rightSide.append(restriction[len(restriction) - 1])
         restriction.remove(restriction[len(restriction) - 1])
@@ -106,14 +106,14 @@ def createGreatMTabularForm():
     i = 1
     j = 0
     while i <= len(restrictionsMatrix) - 1:
-        if slackVariables[j][0] == 'x':                                     # revisa si es variable normal
+        if slackVariables[j][0] == 'x':                                     # checks if its normal variable
             restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = 1
             j += 1
             i += 1
-        if slackVariables[j][0] == 's':                                     # revisa si es variable de exceso
+        if slackVariables[j][0] == 's':                                     # checks if its excess variable
             restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = -1
             j += 1
-        if slackVariables[j][0] == 'a':                                     # revisa si es variable artificial
+        if slackVariables[j][0] == 'a':                                     # checks if its artificial variable
             restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = 1
             j += 1
         i += 1

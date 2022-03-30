@@ -40,25 +40,25 @@ this program. Remember to write the name correctly, otherwise it won't work.
 Function: validateInputFile
 Input: -
 Output: -
-Description: This function takes the name of the input file and checks if the -h parameter was passed or not 
-             If all it's ok, another function is called to store the information 
+Description: Function that takes name of input file and checks if the -h parameter was passed or not,
+            calls another function to store the information 
 """
 def validateInputFile():
     global fileName
     global fileOut
 
-    if len(sys.argv) == 2 and sys.argv[1] == "-h":       #it only wants to read the help message, the file is not given as a parameter
+    if len(sys.argv) == 2 and sys.argv[1] == "-h":       # it only wants to read the help message, the file is not given as a parameter
         print(helpMessage)
         exit()
 
-    elif len(sys.argv) == 3 and sys.argv[1] == "-h":     #the file was entered as a parameter and it requires the help message
+    elif len(sys.argv) == 3 and sys.argv[1] == "-h":     # the file was entered as a parameter and it requires the help message
         print(helpMessage)
         inputFileName = sys.argv[2]
         fileName.append(inputFileName[0:len(inputFileName) - 4])
         fileOut.append(open("./Solutions/" + fileName[0] + "_solution" + ".txt","w"))
         saveInformationFromFile("./Problems/"+sys.argv[2])
 
-    elif len(sys.argv) == 2 and sys.argv[1] != "-h":     #the file was entered as a parameter and does NOT require the help message
+    elif len(sys.argv) == 2 and sys.argv[1] != "-h":     # the file was entered as a parameter and does NOT require the help message
         inputFileName = sys.argv[1]
         fileName.append(inputFileName[0:len(inputFileName) - 4]) 
         fileOut.append(open("./Solutions/" + fileName[0] + "_solution" + ".txt","w"))     
@@ -116,7 +116,7 @@ def saveInformationFromFile(fileName):
             objectiveFunction.append(round(float(newObjectiveFunctionForm[i]) * -1 , 5))
             i+=1
         
-        objectiveFunction.append(0)                                                 #Se agrega el 0 del lado derecho
+        objectiveFunction.append(0)                                                 # add 0 to right side
 
         restrictionsMatrix.append(objectiveFunction)
 
@@ -127,7 +127,7 @@ def saveInformationFromFile(fileName):
 Function: extractInformationFromRestrictions
 Input: -
 Output: -
-Description: Function that extracts the restrictions that are in string format and passes them in a matrix with operable 
+Description: Function that gets restrictions in string format and passes them in a matrix with operable 
              numbers, also saves the inequalities in a list
 """
 def extractInformationFromRestrictions():
@@ -138,7 +138,7 @@ def extractInformationFromRestrictions():
 
     while stringRestrictions != []:
         i = 0
-        newRestictionForm = stringRestrictions[0].split(sep=',')                            #.split(sep=',') separate all elements after a comma in a str
+        newRestictionForm = stringRestrictions[0].split(sep=',')                            # separate all elements after a comma in a string
 
         while i <= len(newRestictionForm) - 1:
 

@@ -4,9 +4,9 @@ from simplexMethod import *
 from greatM import *
 
 validateInputFile()
-extractInformationFromRestrictions()     # se lee el documento y se extraen en listas toda la informacion necesaria
+extractInformationFromRestrictions()     # reads file and extracts information in lists
 
-if selectedMethod[0] == 0 and verifyInequalities() == "simplex":                              #Se valida que se pueda simplex
+if selectedMethod[0] == 0 and verifyInequalities() == "simplex":     # validates if simplex method can be used
     
     augmentedForm()
     defineStarterBasicAndNoBasicVariables()
@@ -15,8 +15,9 @@ if selectedMethod[0] == 0 and verifyInequalities() == "simplex":                
 
 elif selectedMethod[0] == 1 and verifyInequalities() == "no simplex":
     
-    augmentedForm() # para gran M
+    augmentedForm()
     defineStarterBasicAndNoBasicVariables()
     createGreatMTabularForm()
     simplexMethod()
-#NOTA IMPORTANTE: Declarar varaibles e igualarlas a alguna otra no funciona de manera global, con append si!!
+
+# IMPORTANT: declaring variables and matching them to another doesn't work globally, only with append

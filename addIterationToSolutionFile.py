@@ -6,16 +6,16 @@ bVIn = [0]
 bVOut = [0]
 pivotNumber = [0]
 nonBoundedSolution = [False]
-#degenerateSolution = [False]
 
 """
-Function:
-Input:
-Output:
-Description: 
+Function: addIterationToFinalSolution
+Input: is optimal, iteration number, augmented, degenerate, not bounded and multiple solutions
+Output: -
+Description: Function that writes to file
 """
 def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateSolution,nonBoundedSolution,multipleSolutions):
 
+    # adds more space if the problem has complex numbers
     if selectedMethod[0] == 0:
         spaceBetweenX = 5
         spaceForEachX = 6
@@ -87,7 +87,7 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
         f[0].write((finalSpace * " ") + "| " + str(rightSide[j]))
         
         
-        #linea divisoria de abajo
+        # dividing line 
         f[0].write("\n---|")
         f[0].write( (11* (contVariables[0])) * "-")
         if selectedMethod[0] == 0:
@@ -105,9 +105,8 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
         f[0].write("\nAugmented Solution:  ")
 
     f[0].write("(")
-        
-    
-    
+
+
     k = 0
 
     while k <= len(augmentedSolution) - 1:
@@ -152,10 +151,15 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
         f[0].write("\n")
 
     f[0].write("\n")
+    
+    # don't close file, since its needed for further iterations
 
-    #f.close()                                         #Si se le hace close no se puede escribir mas sobre el archivo en otras iteraciones
-
-
+"""
+Function: getPivotAndVariablesInfo
+Input: incoming and outcoming variables, pivot number
+Output: -
+Description: Function that assigns corresponding values when changing in and outcoming variables
+"""
 def getPivotAndVariablesInfo(incoming,outcoming,pivot):
     global bVIn
     global bVOut
@@ -164,4 +168,3 @@ def getPivotAndVariablesInfo(incoming,outcoming,pivot):
     bVIn[0] = incoming
     bVOut[0] = outcoming
     pivotNumber[0] = pivot
-
