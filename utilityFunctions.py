@@ -7,6 +7,12 @@ rightSide = []
 rowsToOperateOn = []
 numbersToOperateOn = []
 
+"""
+Function: validateSpecialCases
+Input: request, dividing numbers
+Output: boolean or position of row
+Description: Function that validates special cases
+"""
 def validateSpecialCases(request,dividingNumbers):
     totalDivisionResults = []
     numbersToDivide = rightSide[1:]
@@ -17,11 +23,11 @@ def validateSpecialCases(request,dividingNumbers):
     while i <= len(dividingNumbers) - 1:
 
         if dividingNumbers[i] < 0 or dividingNumbers[i] == 0:
-            totalDivisionResults.append("invalidNumber")                                   # si el numero que se divide es negativo se agrega en esa posicion un "invalid"
+            totalDivisionResults.append("invalidNumber")    # if dividing number is negative, it becomes "invalid"
             i += 1
         
         else:
-            if numbersToDivide[i] < 0:                                                  #si el numero que se divide es negativo se agrega en esa posicion un "invalid"
+            if numbersToDivide[i] < 0:                      # if dividing number is negative, it becomes "invalid"
                 totalDivisionResults.append("invalidNumber")                                  
                 i += 1
             else:           
@@ -39,15 +45,11 @@ def validateSpecialCases(request,dividingNumbers):
     elif request == "is degenerate?": 
         minorNumber = totalDivisionResults[np.argmin(totalDivisionResults)]             
         
-        if(totalDivisionResults.count(minorNumber)) > 1:                 # si el menor numero de los resultados al dividir se encuentra mas de 1 vez
+        if(totalDivisionResults.count(minorNumber)) > 1:          # validates if minimum number from results of division appears more than once
             return True
-        
         else:
             return False
             
-
-            
-    
     else:  
         maxValue = max(numbersDivisionResults)
         k = 0
@@ -55,7 +57,6 @@ def validateSpecialCases(request,dividingNumbers):
             if type(totalDivisionResults[k]) == str:
                 totalDivisionResults[k] = maxValue
                 k += 1
-            
             k += 1
 
         pivotRowPosition = np.argmin(totalDivisionResults) + 1
@@ -63,7 +64,12 @@ def validateSpecialCases(request,dividingNumbers):
         return pivotRowPosition
 
      
-
+"""
+Function: getColumnDividingNumbers
+Input: minimum position of number
+Output: list of numbers that divide the right side
+Description: Function that returns the column of numbers to divide by
+"""
 def getColumnDividingNumbers(minNumberPosition):
     dividingNumbers = []
 
@@ -76,7 +82,12 @@ def getColumnDividingNumbers(minNumberPosition):
     return dividingNumbers
 
 
-
+"""
+Function: isOptimal
+Input: -
+Output: boolean value
+Description: Function that returns if the current answer is optimal
+"""
 def isOptimal():
     if selectedMethod[0] == 0:
         firstRestriction = restrictionsMatrix[0]
@@ -94,7 +105,12 @@ def isOptimal():
     else:
         return False
 
-
+"""
+Function: transposeMatrix
+Input: some matrix
+Output: matrix transposed
+Description: Function that returns a matrix in its transposed form
+"""
 def transposeMatrix(matrix):
     transposedMatrix = []
 
@@ -110,7 +126,12 @@ def transposeMatrix(matrix):
 
     return transposedMatrix
 
-
+"""
+Function: divideRestrictionNumbers
+Input: position and pivot number
+Output: -
+Description: Function that divides the numbers in the restriction matrix by the pivot number
+"""
 def divideRestrictionNumbers(position,pivotNumber):
 
     i = 0
@@ -120,27 +141,38 @@ def divideRestrictionNumbers(position,pivotNumber):
 
         i += 1
     
-    rightSide[position] = rightSide[position] / pivotNumber                         #Se divide tambien el numero del lado derecho
+    rightSide[position] = rightSide[position] / pivotNumber     # the number on right side is divided too
 
+"""
+Function: checkZerosInPivotColumn
+Input: matrix, row and column
+Output: -
+Description: Function that fills pivot column with zeros and 1 in the position of pivot number
+"""
 def checkZerosInPivotColumn(matrix, row, column):
     global rowsToOperateOn
     global numbersToOperateOn
 
     i = 0
 
-    while i <= len(matrix) - 1:                                         # se colocan 0's en toda la coluna pivot
+    while i <= len(matrix) - 1:                                   # pivot column is filled with zeros
 
         if matrix[i][column] != 0:
-            if i != row:                                                # se guardan los indices de las restricciones a las que hay que aplicarles operaciones de renglon
-                rowsToOperateOn.append(i)                               # tambien se guardan los valores que estaban en esos indices antes del cambio para poder operar luego
+            if i != row:                                          # save restrictions' indexes where row operations need to be done
+                rowsToOperateOn.append(i)                         # we also save the values in the indexes before changing so we can calculate later
                 numbersToOperateOn.append(matrix[i][column])
 
             matrix[i][column] = 0
         i += 1
 
-    matrix[row][column] = 1                                             # se agrega un 1 en el lugar del numero pivot
+    matrix[row][column] = 1                                       # pivot number turns to 1
     
-
+"""
+Function: resetOperableList
+Input: -
+Output: -
+Description: Function that resets lists for each iteration
+"""
 def resetOperableList():
     global rowsToOperateOn
     global numbersToOperateOn
@@ -148,7 +180,12 @@ def resetOperableList():
     rowsToOperateOn = []
     numbersToOperateOn = []
 
-
+"""
+Function: rowOperations
+Input: matrix, restriction, column and row of pivor number
+Output: -
+Description: Function that performs operations on all rows
+"""
 def rowOperations(matrix,restriction,mainColumn,mainRow):
 
     i = 0
@@ -203,64 +240,21 @@ def rowOperations(matrix,restriction,mainColumn,mainRow):
             matrix[rowsToOperateOn[i]] = newRow
             i += 1
 
+"""
+Function: roundComplex
+Input: complex number
+Output: rounded complex number
+Description: Function that rounds a given complex number
+"""
 def roundComplex(number):
-    return round(number.real, 2) + round(number.imag, 2) * 1j
+    return round(number.real, 4) + round(number.imag, 4) * 1j
 
-    
-#arreglar en caso de que hayan negativos
-def improveNumbersPresentation(matrix,list):
-
-    i = 0
-
-    while i <= len(matrix) - 1:
-
-        j = 0
-
-        while j <= len(matrix[i]) - 1:
-
-            strNumber = str(matrix[i][j])
-            strNumber = strNumber.split(".")
-
-            if len(strNumber) > 1:
-
-                if(int(strNumber[1])) == 0:
-                    matrix[i][j] = int(matrix[i][j])
-                    j += 1
-                
-                else:
-                    matrix[i][j] = float(round(matrix[i][j],5))
-                    j += 1
-            
-            else:
-                matrix[i][j] = int(matrix[i][j])
-
-                j += 1
-
-        i += 1
-    
-
-    k = 0
-
-    while k <= len(list) - 1:
-
-        strNumber = str(list[k])
-        strNumber = strNumber.split(".")
-
-        if len(strNumber) > 1:
-
-            if (int(strNumber[1])) == 0:
-                list[k] = int(list[k])
-                k += 1
-                
-            else:
-                list[k] = float(round(list[k],5))
-                k += 1
-            
-        else:
-            list[k] = int(list[k])
-            k += 1
-
-
+"""
+Function: uptadeNonBasicVariables
+Input: non basic variables
+Output: -
+Description: Function that updates the nBV
+"""
 def uptadeNonBasicVariables(nBV):
     
     difVariables = []
@@ -275,7 +269,12 @@ def uptadeNonBasicVariables(nBV):
     for variable in difVariables:
         nBV.append(variable)
     
-
+"""
+Function: printFinalSolution
+Input: augmented solution and if its optimal
+Output: -
+Description: Function that prints the final solution
+"""
 def printFinalSolution(augmentedSolution, optimal):
     print("Final Augmented Solution -> "+ str(augmentedSolution))
     
@@ -285,7 +284,12 @@ def printFinalSolution(augmentedSolution, optimal):
     else:
         print("Not Optimal Solution ->  U = " + str(rightSide[0]) + "\n")
 
-#se revisa si hay ceros en alguna variable no basica y se obtiene la posicion de una de ellas para usar oco pivot
+"""
+Function: checkZerosInNonBasicVariables
+Input: augmented solution and if its optimal
+Output: -
+Description: Function that checks if a nBV has ceros and gets its position to use as pivot
+"""
 def checkZerosInNonBasicVariables(request,nBV):
     newPivotColum = -1
 

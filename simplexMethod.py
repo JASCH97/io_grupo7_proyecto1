@@ -7,8 +7,8 @@ augmentedSolution = []
 
 """
 Function: simplexMethod
-Input:
-Output:
+Input: -
+Output: -
 Description: Function that solves a problem using the simplex method
 """
 def simplexMethod():
@@ -23,31 +23,27 @@ def simplexMethod():
         degenerateFlag = False
 
         if iterationNumber == 0:
-            optimal = isOptimal()                                               #Se pregunta si la solucion aumentada es optima 
-            getAugmentedSolutionSimplex()                                       #Al ser primer estado simplemente se da la solucion aumentada e informacion de variables
-            #improveNumbersPresentation(restrictionsMatrix, rightSide)
-            #improveNumbersPresentation(restrictionsMatrix, augmentedSolution)               #se hace un llamado extra para limpiar la solicion aumentada
-            addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,False,False)              #Se agrega el estado 0 al archivo de salida txt
+            optimal = isOptimal()   # checks if augmented solution is optimal
+            getAugmentedSolutionSimplex()   # since its first iteration, we only write the augmented solution and variable information
+            addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,False,False)   # prints first iteration to solution file
             iterationNumber += 1
             
-
         else:
-            # revisa si hay algun numero complejo en la matriz
+            # checks if there is a complex number in the matrix
             if np.iscomplex(restrictionsMatrix).any():
                 modifiedMatrix = np.array(restrictionsMatrix)
-                sumofComplex = modifiedMatrix[0].real + modifiedMatrix[0].imag*10000    #multiplica por un M grande para que siempre escoja el menor
+                sumofComplex = modifiedMatrix[0].real + modifiedMatrix[0].imag*10000    # multiplies by a big M to obtain the minimum value
                 pivotCol = np.argmin(sumofComplex)
             else:
                 pivotCol = np.argmin(restrictionsMatrix[0])
             
-            dividingNumbers = getColumnDividingNumbers(pivotCol)                            #numeros que dividen el lado derecho
+            dividingNumbers = getColumnDividingNumbers(pivotCol)    # numbers that divide the right side
             nonBoundedSolution = validateSpecialCases("is non bounded?",dividingNumbers)
 
             if nonBoundedSolution == True:  
                 print("\n")    
                 printFinalSolution(augmentedSolution,optimal)                                    
                 print("The next iteration has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nThe problem has no solution.\n")
-                #addIterationToFinalSolution(optimal, iterationNumber,augmentedSolution,degenerateFlag,True,False)
                 f[0].write("The next iteration has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nThe problem has no solution.\n")
                 exit(0)
             
@@ -59,16 +55,16 @@ def simplexMethod():
                     degenerateCont += 1
                                                           
 
-                pivotNumber = transposeMatrix(restrictionsMatrix)[pivotCol][pivotRow]             #en la matriz transpuesta en la columa y fila del pivot encontramos el pivot       
+                pivotNumber = transposeMatrix(restrictionsMatrix)[pivotCol][pivotRow]   # finds pivot in tranposed matrix from column and row of pivot
 
-                divideRestrictionNumbers(pivotRow, pivotNumber)                               #se divide la fila del # pivot entre el numero pivot
+                divideRestrictionNumbers(pivotRow, pivotNumber)     # pivot row is divided by pivot number
 
-                checkZerosInPivotColumn(restrictionsMatrix, pivotRow,pivotCol)      #se ponen 0's en la columna pivot y se obtienen indices/numeros para operar sobre renglones
+                checkZerosInPivotColumn(restrictionsMatrix, pivotRow,pivotCol)      # in pivot column we put 0's and we get indexes/numbers to operate on rows
                     
                 bVOutcoming = bV[pivotRow - 1]
-                bV[pivotRow - 1] = strTotalVariables[pivotCol]                                        #se resta 1 a pivotRow porque en bV no esta la U, solo las X's
+                bV[pivotRow - 1] = strTotalVariables[pivotCol]      # subtract 1 from pivotRow since bV doesn't has the U, only X's
 
-                uptadeNonBasicVariables(nBV)                                                    #Se actualizan las variables no basicas
+                uptadeNonBasicVariables(nBV)        # update non basic variables
 
                 getPivotAndVariablesInfo(bV[pivotRow - 1], bVOutcoming, pivotNumber)
 
@@ -76,7 +72,6 @@ def simplexMethod():
 
                 resetOperableList()                                         
 
-                #improveNumbersPresentation(restrictionsMatrix,rightSide)
                 getAugmentedSolutionSimplex() 
 
                 optimal = isOptimal()
@@ -86,7 +81,12 @@ def simplexMethod():
 
     simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber + 1)
 
-
+"""
+Function: simplexMethodAux
+Input: degenerate counter, nBV, augmented solution and iteration number
+Output: -
+Description: Auxiliar function for simplex method
+"""
 def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
     previousSolution = "Final Augmented Solution 1 -> "+ str(augmentedSolution) + "\n->  U = " + str(rightSide[0])
     degenerateFlag = False
@@ -98,7 +98,7 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
     elif checkZerosInNonBasicVariables("zeros in nBV?", nBV) == True:
 
         pivotCol = checkZerosInNonBasicVariables("new pivot column?",nBV)
-        dividingNumbers = getColumnDividingNumbers(pivotCol)                            #numeros que dividen el lado derecho
+        dividingNumbers = getColumnDividingNumbers(pivotCol)    # numbers that divide the right side
         nonBoundedSolution = validateSpecialCases("is non bounded?",dividingNumbers)
 
         if nonBoundedSolution == True:                                          
@@ -114,17 +114,16 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
                 degenerateFlag = True
                 degenerateCont += 1
                                                         
+            pivotNumber = transposeMatrix(restrictionsMatrix)[pivotCol][pivotRow]   # finds pivot in tranposed matrix from column and row of pivot
 
-            pivotNumber = transposeMatrix(restrictionsMatrix)[pivotCol][pivotRow]                 #en la matriz transpuesta en la columa y fila del pivot encontramos el pivot       
+            divideRestrictionNumbers(pivotRow, pivotNumber)     # pivot row is divided by pivot number
 
-            divideRestrictionNumbers(pivotRow, pivotNumber)                                 #se divide la fila del # pivot entre el numero pivot
-
-            checkZerosInPivotColumn(restrictionsMatrix, pivotRow,pivotCol)         #se ponen 0's en la columna pivot y se obtienen indices/numeros para operar sobre renglones
+            checkZerosInPivotColumn(restrictionsMatrix, pivotRow,pivotCol)      # in pivot column we put 0's and we get indexes/numbers to operate on rows
                 
             bVOutcoming = bV[pivotRow - 1]
-            bV[pivotRow - 1] = strTotalVariables[pivotCol]                                              #se resta 1 a pivotRow porque en bV no esta la U, solo las X's
+            bV[pivotRow - 1] = strTotalVariables[pivotCol]      # subtract 1 from pivotRow since bV doesn't has the U, only X's
 
-            uptadeNonBasicVariables(nBV)                                                    #Se actualizan las variables no basicas
+            uptadeNonBasicVariables(nBV)        # update non basic variables
 
             getPivotAndVariablesInfo(bV[pivotRow - 1], bVOutcoming, pivotNumber)
 
@@ -132,9 +131,8 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
 
             resetOperableList()                                        
 
-            #improveNumbersPresentation(restrictionsMatrix,rightSide)
             getAugmentedSolutionSimplex() 
-                                     #
+
             optimal = isOptimal()
                 
             addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,True)     
@@ -148,23 +146,28 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
     else:
         printFinalSolution(augmentedSolution,True)
 
+"""
+Function: getAugmentedSolutionSimplex
+Input: -
+Output: -
+Description: Function that calculates the augmented solution
+"""
 def getAugmentedSolutionSimplex():
     global augmentedSolution
 
-    while augmentedSolution != []:              #se resetea para que no se acumulen valores con el append
+    while augmentedSolution != []:  # resets lists since values from previous iterations remain
         augmentedSolution.pop(0)
 
     i = 0
 
-    #primero se llena de ceros la solucion aumentada por facilidad
+    # augmentedSolution list is filled with ceros
     while i <= contVariables[0] - 1:
         augmentedSolution.append(0)
         i += 1
- 
-    #Luego simplemente por cada variable basica se agrega a la solucion aumentada su valor correspondiente en el LD **A prueba, se necesitan varias iteraciones para comprobar
-    #No se usan los GL ya que la estrategia es verificar las variables basicas para saber cual es la solucion aumentada 
+    
+    # for each basic variable, add the value on the right side to the augmented solution
     k = 0
-    rightSideValues = rightSide[1:]                             # se ignora el primer elemento del lado derecho ya que corresponde a la funcion objetivo
+    rightSideValues = rightSide[1:] # first value is ignored since its from the objective function
 
     while k <= len(bV) - 1:
 
@@ -184,12 +187,12 @@ def createSimplexTabularForm():
     global rightSide
     global restrictionsMatrix
 
-    #Quita de las restricciones el numero que va en el lado derecho
+    # removes right side values from restrictions matrix
     for restriction in restrictionsMatrix:
         rightSide.append(restriction[len(restriction) - 1])
         restriction.remove(restriction[len(restriction) - 1])
 
-    #Se elimina el numero que queda de exceso
+    # remove the excess number that was added before
     for restriction in restrictionsMatrix:
         if restriction == restrictionsMatrix[0]:
             None
