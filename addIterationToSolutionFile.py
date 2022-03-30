@@ -2,6 +2,7 @@ from validationsBeforeMethodSelection import *
 from utilityFunctions import *
 from readAndSaveTxtInformation import fileOut as f
 
+#global variables
 bVIn = [0]
 bVOut = [0]
 pivotNumber = [0]
@@ -11,7 +12,7 @@ nonBoundedSolution = [False]
 Function: addIterationToFinalSolution
 Input: is optimal, iteration number, augmented, degenerate, not bounded and multiple solutions
 Output: -
-Description: Function that writes to file
+Description: Function that writes the iterations in the output file
 """
 def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateSolution,nonBoundedSolution,multipleSolutions):
 
