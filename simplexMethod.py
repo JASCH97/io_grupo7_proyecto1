@@ -2,7 +2,7 @@ from readAndSaveTxtInformation import *
 from validationsBeforeMethodSelection import *
 from utilityFunctions import *
 from addIterationToSolutionFile import *
-from twoPhases import adaptationForTheFinalPhase
+
 #global variable
 augmentedSolution = []
 
