@@ -128,6 +128,8 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
     
     if(optimal == False):
         f[0].write("\nNot Optimal Result")
+        if iterationNumber > 0:
+            f[0].write("\nBV incoming = " + bVIn[0] + "\nBV outcoming = " + bVOut[0] + "\nPivot Number = " + str(pivotNumber[0]))
         
     elif(optimal == True):
         f[0].write("\nOptimal Result")
@@ -140,8 +142,6 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
     for variable in nBV:
         f[0].write(str(variable) + "  ")
 
-    if iterationNumber > 0:
-        f[0].write("\nBV incoming = " + bVIn[0] + "\nBV outcoming = " + bVOut[0] + "\nPivot Number = " + str(pivotNumber[0]))
     
     if nonBoundedSolution == True:
         f[0].write("\nThis problem has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nCannot continue.")

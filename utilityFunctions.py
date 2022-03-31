@@ -142,7 +142,7 @@ def divideRestrictionNumbers(position,pivotNumber):
 
         i += 1
     
-    rightSide[position] = rightSide[position] / pivotNumber     # the number on right side is divided too
+    rightSide[position] = round((rightSide[position] / pivotNumber) , 4)   # the number on right side is divided too
 
 """
 Function: checkZerosInPivotColumn
@@ -223,23 +223,27 @@ def rowOperations(matrix,restriction,mainColumn,mainRow):
             i += 1
     
     else:
-        rightSide[mainRow] = round(rightSide[mainRow], 5)
+        rightSide[mainRow] = rightSide[mainRow]
+        round(rightSide[mainRow], 4)
+
         while i <= len(rowsToOperateOn) - 1:
             newRow = []
             j = 0
             while j <= len(matrix[0]) - 1:
 
                 if j == mainColumn:
-                    newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 5))
+                    newRow.append(round((matrix[rowsToOperateOn[i]][j]) , 4))
                     j += 1
 
                 else:
-                    newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 5)) 
+                    newRow.append(round((matrix[rowsToOperateOn[i]][j] + (numbersToOperateOn[i] * -1) * restriction[j]) , 4)) 
                     j += 1
 
-            rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]) , 5)
+            rightSide[rowsToOperateOn[i]] = round((rightSide[rowsToOperateOn[i]] + (numbersToOperateOn[i] * -1) * rightSide[mainRow]) , 4)
             matrix[rowsToOperateOn[i]] = newRow
             i += 1
+
+
 
 """
 Function: roundComplex
@@ -287,7 +291,7 @@ def printFinalSolution(augmentedSolution, optimal):
 
 """
 Function: checkZerosInNonBasicVariables
-Input: augmented solution and if its optimal
+Input: a request and the non basic variables list
 Output: -
 Description: Function that checks if a nBV has ceros and gets its position to use as pivot
 """
@@ -303,9 +307,9 @@ def checkZerosInNonBasicVariables(request,nBV):
     
     else:
         if newPivotColum != -1:
-            return True                     # si hay 0's en alguna de las variables no basicas
+            return True                     
         
-        else:                               # no hay 0's en las variables no basicas
+        else:                               
             return False
 
 """

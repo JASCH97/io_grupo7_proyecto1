@@ -2,7 +2,7 @@ from readAndSaveTxtInformation import *
 from validationsBeforeMethodSelection import *
 from utilityFunctions import *
 from addIterationToSolutionFile import *
-
+from twoPhases import adaptationForTheFinalPhase
 #global variable
 augmentedSolution = []
 
@@ -13,7 +13,7 @@ Output: -
 Description: Function that solves a problem using the simplex method. After obtaining the initial augmented solution, 
 use simplexMethodAux() function for the other iterations
 """
-def simplexMethod():
+def simplexMethod(twoPhaseFlag):
     global augmentedSolution
     global pivotNumber
     global nBV
@@ -60,7 +60,7 @@ def simplexMethod():
                 pivotNumber = transposeMatrix(restrictionsMatrix)[pivotCol][pivotRow]   # finds pivot number in tranposed matrix from column and row of pivot
 
                 divideRestrictionNumbers(pivotRow, pivotNumber)                         # pivot row is divided by pivot number
-
+                
                 checkZerosInPivotColumn(restrictionsMatrix, pivotRow,pivotCol)        # in pivot column we put 0's and we get indexes/numbers to operate on rows
                     
                 bVOutcoming = bV[pivotRow - 1]
@@ -81,7 +81,15 @@ def simplexMethod():
                 addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,False)   
                 iterationNumber += 1
 
-    simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber + 1)
+
+    if twoPhaseFlag == True:                                              #If the flag is True, it waits for the final changes of the second phase to be made before continuing.
+       # print(restrictionsMatrix)
+        adaptationForTheFinalPhase()
+        #print(restrictionsMatrix)
+        finalTwoPhaseSimplexIterations(iterationNumber)
+
+    else:
+        simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber + 1)
 
 """
 Function: simplexMethodAux
@@ -174,7 +182,7 @@ def getAugmentedSolutionSimplex():
     while k <= len(bV) - 1:
 
         strXVariable = bV[k][1]
-        augmentedSolution[int(strXVariable) - 1] = rightSideValues[k]
+        augmentedSolution[int(strXVariable) - 1] = round(rightSideValues[k] , 5)
 
         k += 1
 
@@ -230,3 +238,6 @@ def modifyRestrictionsForTabularForm():
         nextOnePosition += 1
         i += 1
 
+
+def finalTwoPhaseSimplexIterations(iterationNumber):
+    print("")

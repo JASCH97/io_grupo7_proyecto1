@@ -1,3 +1,4 @@
+Using Simplex Method...
 
 Status: 0
 
@@ -32,11 +33,11 @@ x6 |   0          -1.0       1.0        0.0        -1.0       1.0      | 10.0
 
 Augmented Solution:  ( 10.0, 0, 0, 20.0, 0, 10.0 )  -->    U = 200.0
 Not Optimal Result
-Basic Variables = x4  x1  x6  
-Non Basic Variables = x2  x3  x5  
 BV incoming = x1
 BV outcoming = x5
 Pivot Number = 1.0
+Basic Variables = x4  x1  x6  
+Non Basic Variables = x2  x3  x5  
 The next iteration has non bounded solution!.
 The coefficients on the right side are negative or undefined.
 The problem has no solution.

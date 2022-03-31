@@ -3,8 +3,9 @@ from utilityFunctions import *
 from readAndSaveTxtInformation import *
 import numpy as np
 
+# Global variables
 phaseTwoRow = []
-
+phaseTwoRowBackUp = []
 """
 Function: appropriateFormTwoPhases
 Input: -
@@ -14,20 +15,16 @@ Description: Function that turns the appropriate form of the row (0) / objective
 def appropriateFormTwoPhases():
     global phaseTwoRow
     
-    phaseOneRow = []
-    phaseTwoRow = restrictionsMatrix[0]
-    artCounter = 0
     i = numberOfDecisionVariables[0]
-    for var in strTotalVariables:
-        if int(var[1]) > i :
-            phaseTwoRow.insert(i, 0)
-            i += 1
-        if artificialVariables[artCounter][1] == var[1]:
+    phaseOneRow = [0]*i
+    phaseTwoRow = restrictionsMatrix[0]
+    for var in slackVariables:
+        i = int(var[1]) - 1
+        if var[0] == 'a':
             phaseOneRow.insert(i, 1)
-            artCounter += 1
-            i += 1
         else:
             phaseOneRow.insert(i, 0)
+            phaseTwoRow.insert(i, 0)
     
     # deletes the artifical variables from phase two
     for art in artificialVariables:
@@ -73,3 +70,93 @@ def appropriateFormOperationsTwoPhases():
     operationsMatrix.insert(0, restrictionsMatrix[0])   # artificial row will always be in operations matrix
     result = np.sum(operationsMatrix, axis=0)
     restrictionsMatrix[0] = result.tolist()
+
+#guarda la funcion objetivo del problema inicial
+def saveFirstObjectiveFunction():
+    global phaseTwoRowBackUp
+
+    for number in restrictionsMatrix[0]:
+        phaseTwoRowBackUp.append(number)
+
+# se eliminan las columnas artificiales y se ingresa la funcion objetivo inicial
+def adaptationForTheFinalPhase():
+    global rightSide
+    global nBV
+    artificialColumns = []
+    newObjectiveFunction = []
+    strArtificials = []
+    
+    for variable in nBV:
+        if variable[0] == "a":
+            artificialColumns.append(int(variable[1]) - 1)
+            strArtificials.append(variable)
+
+  
+    k = 0
+    while strArtificials != []:
+
+        for variable in nBV:
+            if variable == strArtificials[0]:
+                nBV.remove(variable)
+
+            for strVariable in strTotalVariables:
+                if strVariable == strArtificials[0]:
+                    strTotalVariables.remove(strVariable)
+
+        strArtificials.pop(0)
+
+    
+    j = 0
+
+    while j <= len(artificialColumns) - 1:
+        intTotalVariables.pop(len(intTotalVariables) - 1)
+
+        j += 1
+
+    for variable in phaseTwoRowBackUp:
+        newObjectiveFunction.append(variable * -1)
+
+    print(artificialColumns)
+    for variable in bV:
+        newObjectiveFunction[int(variable[1]) - 1] = newObjectiveFunction[int(variable[1]) - 1]
+
+    
+    artificialColumns.sort(reverse=True)                        # The list is sorted from largest to smallest to avoid problems
+    for restriction in restrictionsMatrix:
+
+        for column in artificialColumns:
+
+            restriction.pop(column)
+
+    restrictionsMatrix.pop(0)
+    newObjectiveFunction.pop(len(newObjectiveFunction) - 1)      
+    restrictionsMatrix.insert(0, newObjectiveFunction)
+    
+    newNumbersToOperateOn = []
+    for variable in bV:
+        newNumbersToOperateOn.append(restrictionsMatrix[0][int(variable[1]) - 1])
+    
+
+    newRowsToOperateOn = restrictionsMatrix[1:]
+    rightSideValues = rightSide[1:]
+
+    for restriction in newRowsToOperateOn:
+
+        k = 0
+
+        while k <= len(restrictionsMatrix[0]) - 1:
+
+            restrictionsMatrix[0][k] = round(restrictionsMatrix[0][k] + (newNumbersToOperateOn[0] * -1) * restriction[k] , 4)
+
+            k += 1
+
+        rightSide[0] = round(rightSide[0] + (newNumbersToOperateOn[0] * -1) * rightSideValues[0] , 4)
+        newNumbersToOperateOn.pop(0)  
+        rightSideValues.pop(0)
+
+
+
+
+
+
+
