@@ -27,7 +27,7 @@ def simplexMethod():
         if iterationNumber == 0:
             optimal = isOptimal()                                                   # checks if augmented solution is optimal
             getAugmentedSolutionSimplex()                                           # since its first iteration, we only write the augmented solution and variable information
-            addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,False,False)   # prints first iteration to solution file
+            addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,False,False,False)   # prints first iteration to solution file
             iterationNumber += 1
             
         else:
@@ -77,8 +77,12 @@ def simplexMethod():
                 getAugmentedSolutionSimplex() 
 
                 optimal = isOptimal()
-
-                addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,False)   
+                
+                if any(var.startswith('a') for var in bV) and optimal:
+                    addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,False,True)
+                    print("\nThis problem has no feasible solution! \nAn artificial variable has a positive value in the final solution.\n")
+                else:
+                    addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,False,False)   
                 iterationNumber += 1
 
     simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber + 1)
@@ -105,7 +109,7 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
 
         if nonBoundedSolution == True:                                          
             print("\nThe next iteration has non bounded solution!.\nThe coefficients on the right side are negative or undefined.\nCannot continue.\n")
-            addIterationToFinalSolution(optimal, iterationNumber,augmentedSolution,degenerateFlag,True,False)
+            addIterationToFinalSolution(optimal, iterationNumber,augmentedSolution,degenerateFlag,True,False,False)
             printFinalSolution(augmentedSolution,optimal)
             exit(0)
         
@@ -137,7 +141,7 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
 
             optimal = isOptimal()
                 
-            addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,True)     
+            addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,True,False)     
  
 
             print("\nThis problem has multiple solutions. You will find more details in the output txt file.")
