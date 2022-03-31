@@ -325,7 +325,7 @@ def removeRightSideMethod():
     # removes right side values from restrictions matrix
     for restriction in restrictionsMatrix:
         rightSide.append(restriction[len(restriction) - 1])
-        restriction.remove(restriction[len(restriction) - 1])
+        restriction.pop(len(restriction) - 1)
 
 """
 Function: checkMinimization
@@ -359,14 +359,10 @@ def createTabularForm():
     i = 1
     j = 0
     while i <= len(restrictionsMatrix) - 1:
-        if slackVariables[j][0] == 'x':                                     # checks if its normal variable
-            restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = 1
-            j += 1
-            i += 1
         if slackVariables[j][0] == 's':                                     # checks if its excess variable
             restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = -1
             j += 1
-        if slackVariables[j][0] == 'a':                                     # checks if its artificial variable
+        if slackVariables[j][0] == 'a' or slackVariables[j][0] == 'x':      # checks if its artificial variable
             restrictionsMatrix[i][int(slackVariables[j][1]) - 1] = 1
             j += 1
         i += 1

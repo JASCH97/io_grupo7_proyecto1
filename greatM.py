@@ -11,19 +11,16 @@ Description: Function that turns the appropriate form of the row (0) / objective
 """
 def appropriateFormGreatM():
     objectiveFunction = restrictionsMatrix[0]
-    artCounter = 0
     i = numberOfDecisionVariables[0]
-    for var in strTotalVariables:
-        if artificialVariables[artCounter][1] == var[1]:
+    for var in slackVariables:
+        i = int(var[1]) - 1
+        if var[0] == 'a':
             if optimization[0] == 'max':
                 objectiveFunction.insert(i, 0+1j)
             else:
                 objectiveFunction.insert(i, 0-1j)
-            artCounter += 1
-            i += 1
-        elif int(var[1]) > i:
+        else:
             objectiveFunction.insert(i, 0)
-            i += 1
     restrictionsMatrix[0] = checkMinimization(objectiveFunction)
 
     appropriateFormOperationsGreatM()
@@ -47,13 +44,14 @@ def appropriateFormOperationsGreatM():
     
     i = 1
     k = 0
-    while i <= len(restrictionsMatrix) - 1:
+    while i < len(restrictionsMatrix):
         if restrictionsMatrix[i][positions[k]] == 1 or restrictionsMatrix[i][positions[k]] == -1:
             newRow = [i * -1j for i in restrictionsMatrix[i]]
             operationsMatrix.append(newRow)
-            k += 1
+            if k+1 < len(positions):
+                k += 1
         i += 1
-    
+
     operationsMatrix.insert(0, restrictionsMatrix[0])   # objective function will always be in operations matrix
     result = np.sum(operationsMatrix, axis=0)
     restrictionsMatrix[0] = result.tolist()
