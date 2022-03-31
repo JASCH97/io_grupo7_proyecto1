@@ -14,7 +14,7 @@ Input: is optimal, iteration number, augmented, degenerate, not bounded and mult
 Output: -
 Description: Function that writes the iterations in the output file
 """
-def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateSolution,nonBoundedSolution,multipleSolutions):
+def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateSolution,nonBoundedSolution,multipleSolutions,notFeasible):
 
     # adds more space if the problem has complex numbers
     if selectedMethod[0] == 0:
@@ -150,6 +150,9 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
     if multipleSolutions == True:
         f[0].write("\nIn one of the non-basic variables of the previous iteration, a 0 is found.\nThat is why this problem has multiple solutions.")
         f[0].write("\n")
+    
+    if notFeasible == True:
+        f[0].write("\n\nThis problem has no feasible solution!\nAn artificial variable has a positive value in the final solution.")
 
     f[0].write("\n")
     
