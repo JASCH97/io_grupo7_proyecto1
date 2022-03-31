@@ -87,10 +87,10 @@ def simplexMethod(twoPhaseFlag):
 
 
     if twoPhaseFlag == True:                                              #If the flag is True, it waits for the final changes of the second phase to be made before continuing.
-       # print(restrictionsMatrix)
-        adaptationForTheFinalPhase()
-        #print(restrictionsMatrix)
-        finalTwoPhaseSimplexIterations(iterationNumber)
+        #adaptationForTheFinalPhase()
+        None
+        
+        
 
     else:
         simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber + 1)
@@ -151,7 +151,6 @@ def simplexMethodAux(degenerateCont, nBV, augmentedSolution,iterationNumber):
                 
             addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degenerateFlag,nonBoundedSolution,True,False)     
  
-
             print("\nThis problem has multiple solutions. You will find more details in the output txt file.")
             print(previousSolution)
             print("Final Augmented Solution 2 -> "+ str(augmentedSolution) + "\n->  U = " + str(rightSide[0]))
@@ -186,7 +185,7 @@ def getAugmentedSolutionSimplex():
     while k <= len(bV) - 1:
 
         strXVariable = bV[k][1]
-        augmentedSolution[int(strXVariable) - 1] = round(rightSideValues[k] , 5)
+        augmentedSolution[int(strXVariable) - 1] = round(rightSideValues[k] , 4)
 
         k += 1
 
@@ -204,7 +203,7 @@ def createSimplexTabularForm():
     # removes right side values from restrictions matrix
     for restriction in restrictionsMatrix:
         rightSide.append(restriction[len(restriction) - 1])
-        restriction.remove(restriction[len(restriction) - 1])
+        restriction.pop(len(restriction) - 1)
 
     # remove the excess number that was added before
     for restriction in restrictionsMatrix:
@@ -241,7 +240,3 @@ def modifyRestrictionsForTabularForm():
         restrictionsMatrix[i][nextOnePosition] = 1
         nextOnePosition += 1
         i += 1
-
-
-def finalTwoPhaseSimplexIterations(iterationNumber):
-    print("")

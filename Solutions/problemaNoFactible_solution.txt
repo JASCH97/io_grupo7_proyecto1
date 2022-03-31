@@ -1,3 +1,4 @@
+Using Big M Method...
 
 Status: 0
 
@@ -28,11 +29,11 @@ x1 |   1                      0.5                    0.0                    0.0 
 
 Augmented Solution:  ( 1.0, 0, 0, 3.0, 0 )  -->    U = (2-3j)
 Not Optimal Result
-Basic Variables = a4  x1  
-Non Basic Variables = x2  s3  x5  
 BV incoming = x1
 BV outcoming = x5
 Pivot Number = 2.0
+Basic Variables = a4  x1  
+Non Basic Variables = x2  s3  x5  
 
 Status: 2
 
@@ -49,9 +50,6 @@ Augmented Solution:  ( 0, 2.0, 0, 2.0, 0 )  -->    U = (10-2j)
 Optimal Result
 Basic Variables = a4  x2  
 Non Basic Variables = x1  s3  x5  
-BV incoming = x2
-BV outcoming = x1
-Pivot Number = 0.5
 
 This problem has no feasible solution!
 An artificial variable has a positive value in the final solution.

@@ -1,3 +1,4 @@
+Using Simplex Method...
 
 Status: 0
 
@@ -34,11 +35,11 @@ Augmented Solution:  ( 2.0, 0, 0, 4.0, 0.0 )  -->    U = 6.0
 The solution is degenerate.
 There are two or more minimum coefficients on the right side with the same value
 Not Optimal Result
-Basic Variables = x1  x4  x5  
-Non Basic Variables = x2  x3  
 BV incoming = x1
 BV outcoming = x3
 Pivot Number = 4.0
+Basic Variables = x1  x4  x5  
+Non Basic Variables = x2  x3  
 
 Status: 2
 
@@ -55,11 +56,11 @@ x2 |   0.0        1          -0.5       0.0        0.5      | 0.0
 
 Augmented Solution:  ( 2.0, 0.0, 0, 4.0, 0 )  -->    U = 6.0
 Not Optimal Result
-Basic Variables = x1  x4  x2  
-Non Basic Variables = x3  x5  
 BV incoming = x2
 BV outcoming = x5
 Pivot Number = 2.0
+Basic Variables = x1  x4  x2  
+Non Basic Variables = x3  x5  
 
 Status: 3
 
@@ -78,6 +79,3 @@ Augmented Solution:  ( 1.5, 2.0, 4.0, 0, 0 )  -->    U = 8.5
 Optimal Result
 Basic Variables = x1  x3  x2  
 Non Basic Variables = x4  x5  
-BV incoming = x3
-BV outcoming = x4
-Pivot Number = 1.0

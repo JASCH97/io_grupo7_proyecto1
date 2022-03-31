@@ -71,14 +71,14 @@ def appropriateFormOperationsTwoPhases():
     result = np.sum(operationsMatrix, axis=0)
     restrictionsMatrix[0] = result.tolist()
 
-#guarda la funcion objetivo del problema inicial
+#This function create a backUp of the objective function
 def saveFirstObjectiveFunction():
     global phaseTwoRowBackUp
 
     for number in restrictionsMatrix[0]:
         phaseTwoRowBackUp.append(number)
 
-# se eliminan las columnas artificiales y se ingresa la funcion objetivo inicial
+# This function eliminate the artificial columns and insert the main objective function
 def adaptationForTheFinalPhase():
     global rightSide
     global nBV

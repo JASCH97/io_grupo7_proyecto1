@@ -119,7 +119,7 @@ def addIterationToFinalSolution(optimal,iterationNumber,augmentedSolution,degene
             f[0].write(" " + str(augmentedSolution[k]) + ",")
             k += 1
 
-
+    
     f[0].write("  -->    U = " + str(rightSide[0]))
 
     

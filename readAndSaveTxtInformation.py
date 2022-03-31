@@ -32,8 +32,8 @@ Example:
     -1,3,<=,9
     0,1,<=,4
 
-NOTE: Each parameter must be separated by a comma. Also, make sure the .txt file is inside the same folder as 
-this program. Remember to write the name correctly, otherwise it won't work. 
+NOTE: Each parameter must be separated by a comma. Also, make sure the .txt file is inside of the 'Problems' folder. 
+Remember to write the name correctly, otherwise it won't work. 
 """
 
 """
